@@ -63,9 +63,40 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
   
 ## Analyzing BugChecks
 
-- analyze -v: Shows detailed information about the exception
+- <code>analyze -v</code>: Shows detailed information about the exception
 
 ## Processes
+
+### Current Process
+
+- <code>!process</code> - Dump current process information
+```
+kd> !process
+PROCESS ffff8906293a1080
+    SessionId: 1  Cid: 0f3c    Peb: 2063b93000  ParentCid: 122c
+    DirBase: 72810002  ObjectTable: ffffb088f57cedc0  HandleCount:  33.
+    Image: WindowsInspector.Controller.exe
+    VadRoot ffff89062992fac0 Vads 22 Clone 0 Private 354. Modified 0. Locked 0.
+    DeviceMap ffffb088f43ed730
+    Token                             ffffb088f745d060
+    ElapsedTime                       00:00:00.233
+    UserTime                          00:00:00.000
+    KernelTime                        00:00:00.000
+    QuotaPoolUsage[PagedPool]         24560
+    QuotaPoolUsage[NonPagedPool]      3256
+    Working Set Sizes (now,min,max)  (847, 50, 345) (3388KB, 200KB, 1380KB)
+    PeakWorkingSetSize                814
+    VirtualSize                       4143 Mb
+    PeakVirtualSize                   4143 Mb
+    PageFaultCount                    849
+    MemoryPriority                    BACKGROUND
+    BasePriority                      8
+    CommitCharge                      540
+
+        THREAD ffff890628533080  Cid 0f3c.0de0  Teb: 0000002063b94000 Win32Thread: 0000000000000000 RUNNING on processor 0
+
+```
+
 
 ### Listing processes
 
