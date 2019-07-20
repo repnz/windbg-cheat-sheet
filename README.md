@@ -200,6 +200,48 @@ searching symbols (because the symbols are loaded)
 - Use procID to switch context: <code>.process /i <process_id></code>
 - Continue until the scheduler switches to the desired process context: <code>g</code>
 
+```
+kd> .process /i ffff998ba6f6e280
+You need to continue execution (press 'g' <enter>) for the context
+to be switched. When the debugger breaks in again, you will be in
+the new process context.
+kd> g
+Invalid parameter passed to C runtime function.
+Break instruction exception - code 80000003 (first chance)
+rax=0000000000000000 rbx=00000000000000bd rcx=0000000000000007
+rdx=0000000000000000 rsi=0000000000000000 rdi=ffff998ba6f6e280
+rip=fffff8041be59240 rsp=ffff840136f67a58 rbp=ffff998ba6f6e280
+ r8=ffff998ba557b0e8  r9=7ffff8041c60c600 r10=ffff840136f67a90
+r11=0000000000000000 r12=0000000000000700 r13=0000000000000000
+r14=0000000000000000 r15=fffff8041c1fb200
+iopl=0         nv up ei ng nz na pe nc
+cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b             efl=00000282
+nt!DbgBreakPointWithStatus:
+fffff804`1be59240 cc              int     3
+kd> !process
+PROCESS ffff998ba6f6e280
+    SessionId: 0  Cid: 08e4    Peb: 00684000  ParentCid: 032c
+    DirBase: 5e3d0002  ObjectTable: ffffbf8f1ddf8740  HandleCount: 397.
+    Image: vmtoolsd.exe
+    VadRoot ffff998ba57e97a0 Vads 176 Clone 0 Private 1675. Modified 7635. Locked 0.
+    DeviceMap ffffbf8f19413600
+    Token                             ffffbf8f1d65c060
+    ElapsedTime                       02:23:51.459
+    UserTime                          00:00:00.015
+    KernelTime                        00:00:00.031
+    QuotaPoolUsage[PagedPool]         205840
+    QuotaPoolUsage[NonPagedPool]      24888
+    Working Set Sizes (now,min,max)  (1560, 50, 345) (6240KB, 200KB, 1380KB)
+    PeakWorkingSetSize                5419
+    VirtualSize                       4236 Mb
+    PeakVirtualSize                   4245 Mb
+    PageFaultCount                    22400
+    MemoryPriority                    BACKGROUND
+    BasePriority                      13
+    CommitCharge                      2308
+```
+
+That allows us to put breakpoints in the context of this process.
 
 ### Debugging User Mode Code From Kernel Debugging
 
