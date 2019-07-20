@@ -115,3 +115,17 @@ PROCESS ffff8906297ce080
         THREAD ffff890629432080  Cid 06f8.0c6c  Teb: 0000003877759000 Win32Thread: 0000000000000000 RUNNING on processor 0
 ```
 
+### Searching for processes
+
+- Use the "!process" command with wildcards: <code>!process "Windows*"</code>
+
+### Moving to the context of a certain process
+
+Moving between context switches allows placing breakpoints on the process (in user mode), seeing the state of the process, 
+searching symbols (because the symbols are loaded)
+  
+- Get process id : <code>!process 0 0 myproc.exe</code>
+- Use procID to switch context: <code>.process /i <process_id></code>
+- Continue until the scheduler switches to the desired process context: <code>g</code>
+
+
