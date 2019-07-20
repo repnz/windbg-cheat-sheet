@@ -87,4 +87,31 @@ PROCESS ffff8906297ce080
 
 ```
 
+!process <process_name>
+
+```
+kd> !process "WindowsInspector.Controller.exe"
+PROCESS ffff8906297ce080
+    SessionId: 1  Cid: 06f8    Peb: 3877758000  ParentCid: 122c
+    DirBase: 77800002  ObjectTable: ffffb088f3ac8880  HandleCount:  33.
+    Image: WindowsInspector.Controller.exe
+    VadRoot ffff890629929300 Vads 22 Clone 0 Private 353. Modified 0. Locked 257.
+    DeviceMap ffffb088f43ed730
+    Token                             ffffb088f6f88060
+    ElapsedTime                       00:53:33.825
+    UserTime                          00:00:00.000
+    KernelTime                        00:00:00.000
+    QuotaPoolUsage[PagedPool]         24560
+    QuotaPoolUsage[NonPagedPool]      3256
+    Working Set Sizes (now,min,max)  (846, 50, 345) (3384KB, 200KB, 1380KB)
+    PeakWorkingSetSize                814
+    VirtualSize                       4143 Mb
+    PeakVirtualSize                   4143 Mb
+    PageFaultCount                    849
+    MemoryPriority                    BACKGROUND
+    BasePriority                      8
+    CommitCharge                      540
+
+        THREAD ffff890629432080  Cid 06f8.0c6c  Teb: 0000003877759000 Win32Thread: 0000000000000000 RUNNING on processor 0
+```
 
