@@ -39,6 +39,10 @@ You can either:
 If there the DriverEntry function returns an error status, it will be returned to "sc" / OsrLoader and the driver will be unloaded without
 calling DriverUnload.
 
+To debug your own driver, move it into the virtual machine and install it. Then you are welcome to put a breakpoint on the DriverEntry
+by using "bu DriverName!DriverEntry" and then start the driver. If you want to update the code (say you found a bug..) then you can 
+stop the driver, recompile, move the files into the VM, and start the driver again. 
+
 ## Exploring Modules And Symbols
 
 - lm -> Prints list of loaded modules
