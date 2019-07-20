@@ -121,7 +121,7 @@ PROCESS ffff8906297ce080
 
 ### Moving to the context of a certain process
 
-Moving between context switches allows placing breakpoints on the process (in user mode), seeing the state of the process, 
+Moving between process contexts allows placing breakpoints on the process (in user mode), seeing the state of the process, 
 searching symbols (because the symbols are loaded)
   
 - Get process id : <code>!process 0 0 myproc.exe</code>
