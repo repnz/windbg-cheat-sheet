@@ -159,10 +159,10 @@ PROCESS ffff8906297ce080
 
 ```
 
-!process <process_name>
+!process 0 0 <process_name>
 
 ```
-kd> !process "WindowsInspector.Controller.exe"
+kd> !process 0 0 WindowsInspector.Controller.exe
 PROCESS ffff8906297ce080
     SessionId: 1  Cid: 06f8    Peb: 3877758000  ParentCid: 122c
     DirBase: 77800002  ObjectTable: ffffb088f3ac8880  HandleCount:  33.
