@@ -80,6 +80,11 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 - (F11) : step into
 - tt - Trace until next return
 
+## Analyzing Program State
+
+- Use memory window to see raw memory
+- use "dt" to see observe data structures
+- use "??" to evaluate C++ Expressions
 
 ## Processes
 
