@@ -59,7 +59,7 @@ stop the driver, recompile, move the files into the VM, and start the driver aga
 
 .<command> - run a command. This command is built-into the debugger
 !<command> - run an extension. Some extensions arrive by default, like "!process"
-Control-C - Abort Long Running Operation
+Control-Break - Abort Long Running Operation / Debug Break
 
 ## Exploring Modules And Symbols
 
