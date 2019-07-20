@@ -50,4 +50,20 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 
 - analyze -v: Shows detailed information about the exception
 
+## Processes
+
+### Listing processes
+
+.tlist - <process_id>:<process_name>
+
+```
+0n17636 chrome.exe
+0n17744 chrome.exe
+0n13076 chrome.exe
+0n17148 chrome.exe
+0n17516 chrome.exe
+0n10776 chrome.exe
+0n13176 cmd.exe
+```
+
 
