@@ -55,10 +55,16 @@ To debug your own driver, move it into the virtual machine and install it. Then 
 by using "bu DriverName!DriverEntry" and then start the driver. If you want to update the code (say you found a bug..) then you can 
 stop the driver, recompile, move the files into the VM, and start the driver again. 
 
+## General WinDbg
+
+.<command> - run a command. This command is built-into the debugger
+!<command> - run an extension. Some extensions arrive by default, like "!process"
+Control-C - Abort Long Running Operation
+
 ## Exploring Modules And Symbols
 
-- lm -> Prints list of loaded modules
-- x -> Prints loaded symbols - x <module_name>!<symbol_name> - you can use wildcard on both sides
+- lm (List Modules): Prints list of loaded modules
+- x (Examine): Prints loaded symbols - x <module_name>!<symbol_name> - you can use wildcard on both sides
 
 ## Breakpoints
 
