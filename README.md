@@ -65,6 +65,8 @@ stop the driver, recompile, move the files into the VM, and start the driver aga
 - bp - normal breakpoint
 - Breakpoint On DriverEntry - Because the DriverEntry is not loaded yet you cannot use "bp MyDriver!DriverEntry" because this symbol
 is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded.
+- bl - list breakpoints
+- bc * / bc <breakpoint_id> - clear breakpoint
 
   
 ## Analyzing BugChecks
