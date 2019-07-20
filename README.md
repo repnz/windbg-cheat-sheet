@@ -3,7 +3,7 @@
 My personal cheat sheet for using WinDbg for kernel debugging. 
 This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 
-## WinDbg Setup
+## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
 
 - Install [Windows Debugging Tools](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/)
 - use vmware workstation with windows machine installed. 
