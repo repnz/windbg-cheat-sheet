@@ -1,4 +1,4 @@
-# windbg-cheat-sheet
+# Kernel Debugging & WinDbg Cheat Sheet
 
 My personal cheat sheet for using WinDbg for kernel debugging. 
 This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
