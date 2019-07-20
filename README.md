@@ -39,6 +39,11 @@ You can either:
 If there the DriverEntry function returns an error status, it will be returned to "sc" / OsrLoader and the driver will be unloaded without
 calling DriverUnload.
 
+## Exploring Modules And Symbols
+
+- lm -> Prints list of loaded modules
+- x -> Prints loaded symbols - x <module_name>!<symbol_name> - you can use wildcard on both sides
+
 ## Breakpoints
 
 - bp - normal breakpoint
