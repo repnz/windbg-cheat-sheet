@@ -204,6 +204,14 @@ searching symbols (because the symbols are loaded)
 ### Loading Symbols
 
 Add the .pdb path of your user mode application into the source file path. Without doing so, WinDbg might get stuck 
-while trying to get the symbols (https://stackoverflow.com/questions/38062216/windbg-cant-find-microsoft-symbols)
+while trying to get the symbols (https://stackoverflow.com/questions/38062216/windbg-cant-find-microsoft-symbols).
+After that, perform <code>.reload</code> to reload symbols (in the context of this process). Then, "lm" should show the user mode
+image that you are debugging.
 
-
+```
+kd> lm
+start             end                 module name
+00007ff6`1c090000 00007ff6`1c329000   WindowsInspector_Controller C (pdb symbols)          c:\ori\code\inspector-driver\bin\debug\x64\windowsinspector.controller\WindowsInspector.Controller.pdb
+00007ffd`93e90000 00007ffd`93f1c000   apphelp    (deferred)             
+00007ffd`96890000 00007ffd`96b23000   KERNELBASE   (pdb sym
+```
