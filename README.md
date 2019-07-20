@@ -39,3 +39,10 @@ You can either:
 If there the DriverEntry function returns an error status, it will be returned to "sc" / OsrLoader and the driver will be unloaded without
 calling DriverUnload.
 
+## Breakpoints
+
+- bp - normal breakpoint
+- Breakpoint On DriverEntry - Because the DriverEntry is not loaded yet you cannot use "bp MyDriver!DriverEntry" because this symbol
+is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded.
+
+
