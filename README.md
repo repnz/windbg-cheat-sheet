@@ -65,6 +65,14 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 
 - <code>analyze -v</code>: Shows detailed information about the exception
 
+## Tracing and Stepping
+
+- (F5) g : (go) continue
+- (F10) : step over
+- (F11) : step into
+- tt - Trace until next return
+
+
 ## Processes
 
 - cid - CID in the windows structures means client id. Most of the time it refers to a ProcessId or a ThreadId but 
