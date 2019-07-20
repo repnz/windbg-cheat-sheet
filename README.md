@@ -71,4 +71,20 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 0n13176 cmd.exe
 ```
 
+!process 0 0 
+
+```
+
+PROCESS ffff89062943c080
+    SessionId: 1  Cid: 09e0    Peb: 9780215000  ParentCid: 03ac
+    DirBase: 6ce90002  ObjectTable: ffffb088f57cad80  HandleCount: 309.
+    Image: RuntimeBroker.exe
+
+PROCESS ffff8906297ce080
+    SessionId: 1  Cid: 06f8    Peb: 3877758000  ParentCid: 122c
+    DirBase: 77800002  ObjectTable: ffffb088f3ac8880  HandleCount:  33.
+    Image: WindowsInspector.Controller.exe
+
+```
+
 
