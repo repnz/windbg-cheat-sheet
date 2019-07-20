@@ -199,4 +199,11 @@ searching symbols (because the symbols are loaded)
 - Use procID to switch context: <code>.process /i <process_id></code>
 - Continue until the scheduler switches to the desired process context: <code>g</code>
 
+## Debugging User Mode Code From Kernel Debugging
+
+### Loading Symbols
+
+Add the .pdb path of your user mode application into the source file path. Without doing so, WinDbg might get stuck 
+while trying to get the symbols (https://stackoverflow.com/questions/38062216/windbg-cant-find-microsoft-symbols)
+
 
