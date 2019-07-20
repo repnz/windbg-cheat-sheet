@@ -1,7 +1,13 @@
 # Kernel Debugging & WinDbg Cheat Sheet
 
 My personal cheat sheet for using WinDbg for kernel debugging. 
-This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
+This cheat sheet / mini guide will be updated as I do new stuff with WinDbg. 
+
+Books:
+
+- [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
+- [Windows Kernel Programming](https://www.amazon.com/Windows-Kernel-Programming-Pavel-Yosifovich/dp/1977593372) 
+
 
 ## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
 
