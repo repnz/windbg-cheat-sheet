@@ -19,7 +19,7 @@ Manager" to 8.
   - bcdedit /dbgsettings serial debugport:1 baudrate:115200
 - Restart VM. click F8 and choose "Disable Device Signing Enforcement" - that will allow your driver to be load.
 - At that point the VM will stuck. It will try to connect to the debugger. Click "Run Debugger" in vmmon to connect
-- The debugger will breakpoint. Click F5 to continue the OS load or do any command you like.
+- The debugger will break. Click F5 to continue the OS load or do any command you like.
 
   
 ## Installing and Loading Device Drivers
@@ -27,7 +27,7 @@ Manager" to 8.
 You can either:
 
 - Use [Osr Loader](https://www.osronline.com/article.cfm%5Earticle=157.htm) - This works on win 7-10
-- Use builtin SC tool
+- Use builtin SC tool (only win10)
   - Use "sc service <REG_KEY_NAME> type= kernel binPath= <FULL_PATH>" to install the driver as a server
   - Use "sc <REG_KEY_NAME> start" to start the service
 
