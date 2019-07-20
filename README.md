@@ -26,7 +26,7 @@ Manager" to 8.
   
 ## Installing and Loading Device Drivers
 
-Installing a driver is done by registering in the registry under the services key. Loading the driver is done by calling the 
+Installing a driver is done by registering it in the registry under the services key. Loading the driver is done by calling the 
 NtLoadDriver syscall.
 
 You can either:
