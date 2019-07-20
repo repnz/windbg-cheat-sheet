@@ -30,6 +30,12 @@ Manager" to 8.
   - (Symbols of drivers you develop will be loaded automatically from the same folder of the driver. Copy .pdb to the guest..)
 - Click F5 to continue the OS load or do any command you like.
   
+## Settings Workspace
+
+Remember to set the workspace by clicking "Save Workspace" after arranging the windows in the way you like, so next time
+you open WinDbg it will save this arrangement.
+
+
 ## Installing and Loading Device Drivers
 
 Installing a driver is done by registering it in the registry under the services key. Loading the driver is done by calling the 
