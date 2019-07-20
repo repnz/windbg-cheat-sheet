@@ -67,6 +67,9 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 
 ## Processes
 
+- cid - CID in the windows structures means client id. Most of the time it refers to a ProcessId or a ThreadId but 
+sometimes it's both in the same struct. (The struct CLIENT_ID contains UniqueProcessId and UniqueThreadId)
+
 ### Current Process
 
 - <code>!process</code> - Dump current process information
