@@ -45,4 +45,9 @@ calling DriverUnload.
 - Breakpoint On DriverEntry - Because the DriverEntry is not loaded yet you cannot use "bp MyDriver!DriverEntry" because this symbol
 is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded.
 
+  
+## Analyzing BugChecks
+
+- analyze -v: Shows detailed information about the exception
+
 
