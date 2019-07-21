@@ -66,7 +66,8 @@ Control-Break - Abort Long Running Operation / Debug Break
 
 - .reload to reload symbols of loaded modules. Typically used to load symbols of modules that weren't loaded before
 - You may want to use <code>!sym noisy</code> to diagnose symbol loading errors.
-- .reload /u - unload symbols. This is used to release the .pdb file of compiled code
+- .reload /u - unload symbols. This is used to release the .pdb file of compiled code.
+  - Sometimes it's needed to forcefully close handles to PDB files because WinDbg does not close them.
 
 ```
 kd> !sym noisy
