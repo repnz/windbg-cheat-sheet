@@ -61,6 +61,127 @@ stop the driver, recompile, move the files into the VM, and start the driver aga
 !<command> - run an extension. Some extensions arrive by default, like "!process"
 Control-Break - Abort Long Running Operation / Debug Break
 
+
+## Symbols
+
+- You may want to use <code>!sym noisy</code> to diagnose symbol loading errors.
+
+```
+kd> !sym noisy
+kd> .reload
+Connected to Windows 10 17763 x64 target at (Sun Jul 21 22:07:26.775 2019 (UTC + 3:00)), ptr64 TRUE
+SYMSRV:  BYINDEX: 0x6
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         ntkrnlmp.pdb
+         8B11040A5928757B11390AC78F6B69251
+SYMSRV:  PATH: c:\symbols\ntkrnlmp.pdb\8B11040A5928757B11390AC78F6B69251\ntkrnlmp.pdb
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: nt - public symbols  
+        c:\symbols\ntkrnlmp.pdb\8B11040A5928757B11390AC78F6B69251\ntkrnlmp.pdb
+Loading Kernel Symbols
+...............................................................
+................................................................
+.............................................................
+SYMSRV:  BYINDEX: 0x7
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         WindowsInspector.Kernel.pdb
+         0B31EC334DD1442BBD5F46BCD410CFE31
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Kernel.pdb\0B31EC334DD1442BBD5F46BCD410CFE31\WindowsInspector.Kernel.pdb - path not found
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Kernel.pdb\0B31EC334DD1442BBD5F46BCD410CFE31\WindowsInspector.Kernel.pd_ - path not found
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Kernel.pdb\0B31EC334DD1442BBD5F46BCD410CFE31\file.ptr - path not found
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Kernel.pdb/0B31EC334DD1442BBD5F46BCD410CFE31/WindowsInspector.Kernel.pdb
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Kernel.pdb/0B31EC334DD1442BBD5F46BCD410CFE31/WindowsInspector.Kernel.pd_
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Kernel.pdb/0B31EC334DD1442BBD5F46BCD410CFE31/file.ptr
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  RESULT: 0x80190194
+DBGHELP: WindowsInspector_Kernel - private symbols & lines 
+        C:\ori\code\inspector-driver\bin\Debug\x64\WindowsInspector.Kernel\WindowsInspector.Kernel.pdb
+
+
+Press ctrl-c (cdb, kd, ntsd) or ctrl-break (windbg) to abort symbol loads that take too long.
+Run !sym noisy before .reload to track down problems loading symbols.
+
+
+Loading User Symbols
+.....
+Loading unloaded module list
+......
+SYMSRV:  BYINDEX: 0x8
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         ntdll.dll
+         CA65C8221ed000
+SYMSRV:  PATH: c:\symbols\ntdll.dll\CA65C8221ed000\ntdll.dll
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: c:\symbols\ntdll.dll\CA65C8221ed000\ntdll.dll - OK
+DBGENG:  Partial symbol load found image c:\symbols\ntdll.dll\CA65C8221ed000\ntdll.dll.
+SYMSRV:  BYINDEX: 0x9
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         ntdll.pdb
+         BF569FC564FA51D4BFE7B5E47D65792D1
+SYMSRV:  PATH: c:\symbols\ntdll.pdb\BF569FC564FA51D4BFE7B5E47D65792D1\ntdll.pdb
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: ntdll - public symbols  
+        c:\symbols\ntdll.pdb\BF569FC564FA51D4BFE7B5E47D65792D1\ntdll.pdb
+
+
+************* Symbol Loading Error Summary **************
+Module name            Error
+SharedUserData         No error - symbol load deferred
+				Symbol loading has been deferred because this symbol is not needed
+				at this time. Use reload /f to force load symbols.
+
+SYMSRV:  BYINDEX: 0xA
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         KERNELBASE.dll
+         D620E319293000
+SYMSRV:  PATH: c:\symbols\KERNELBASE.dll\D620E319293000\KERNELBASE.dll
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: c:\symbols\KERNELBASE.dll\D620E319293000\KERNELBASE.dll - OK
+DBGENG:  Partial symbol load found image c:\symbols\KERNELBASE.dll\D620E319293000\KERNELBASE.dll.
+SYMSRV:  BYINDEX: 0xB
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         kernelbase.pdb
+         ECB39F0337B1D4A2EF62CCF314793AD21
+SYMSRV:  PATH: c:\symbols\kernelbase.pdb\ECB39F0337B1D4A2EF62CCF314793AD21\kernelbase.pdb
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: KERNELBASE - public symbols  
+        c:\symbols\kernelbase.pdb\ECB39F0337B1D4A2EF62CCF314793AD21\kernelbase.pdb
+SYMSRV:  BYINDEX: 0xC
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         KERNEL32.DLL
+         B9780D03b3000
+SYMSRV:  PATH: c:\symbols\KERNEL32.DLL\B9780D03b3000\KERNEL32.DLL
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: c:\symbols\KERNEL32.DLL\B9780D03b3000\KERNEL32.DLL - OK
+DBGENG:  Partial symbol load found image c:\symbols\KERNEL32.DLL\B9780D03b3000\KERNEL32.DLL.
+SYMSRV:  BYINDEX: 0xD
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         kernel32.pdb
+         0C5D9C23B42DDEB933FF48C9A62BEA0D1
+SYMSRV:  PATH: c:\symbols\kernel32.pdb\0C5D9C23B42DDEB933FF48C9A62BEA0D1\kernel32.pdb
+SYMSRV:  RESULT: 0x00000000
+DBGHELP: KERNEL32 - public symbols  
+        c:\symbols\kernel32.pdb\0C5D9C23B42DDEB933FF48C9A62BEA0D1\kernel32.pdb
+SYMSRV:  BYINDEX: 0xE
+         c:\symbols*http://msdl.microsoft.com/download/symbols
+         WindowsInspector.Controller.pdb
+         9188E5417E3F4FE7BC7D5B6ECB8059A51
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Controller.pdb\9188E5417E3F4FE7BC7D5B6ECB8059A51\WindowsInspector.Controller.pdb - path not found
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Controller.pdb\9188E5417E3F4FE7BC7D5B6ECB8059A51\WindowsInspector.Controller.pd_ - path not found
+SYMSRV:  UNC: c:\symbols\WindowsInspector.Controller.pdb\9188E5417E3F4FE7BC7D5B6ECB8059A51\file.ptr - path not found
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Controller.pdb/9188E5417E3F4FE7BC7D5B6ECB8059A51/WindowsInspector.Controller.pdb
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Controller.pdb/9188E5417E3F4FE7BC7D5B6ECB8059A51/WindowsInspector.Controller.pd_
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  HTTPGET: /download/symbols/WindowsInspector.Controller.pdb/9188E5417E3F4FE7BC7D5B6ECB8059A51/file.ptr
+SYMSRV:  HttpQueryInfo: 80190194 - HTTP_STATUS_NOT_FOUND
+SYMSRV:  RESULT: 0x80190194
+DBGHELP: WindowsInspector_Controller - public symbols & lines 
+        C:\ori\code\inspector-driver\bin\Debug\x64\WindowsInspector.Controller\WindowsInspector.Controller.pdb
+
+```
 ## Exploring Modules And Symbols
 
 - lm (List Modules): Prints list of loaded modules
