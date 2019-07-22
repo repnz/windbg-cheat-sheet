@@ -2,6 +2,8 @@
 
 My personal cheat sheet for using WinDbg for kernel debugging. 
 This cheat sheet / mini guide will be updated as I do new stuff with WinDbg. 
+If you see this and think I missed something cool, open an issue - I'm more than 
+this repo is all about learning. 
 
 Books:
 
@@ -68,6 +70,7 @@ Control-Break - Abort Long Running Operation / Debug Break
 - You may want to use <code>!sym noisy</code> to diagnose symbol loading errors.
 - .reload /u - unload symbols. This is used to release the .pdb file of compiled code.
   - Sometimes it's needed to forcefully close handles to PDB files because WinDbg does not close them.
+  (using process explorer or process hacker..)
 
 ```
 kd> !sym noisy
@@ -373,7 +376,7 @@ Note that the Timestamp and Checksum of the image must be valid. If the image do
 be able to load the symbols. Compiling the executable with vs2019 results in an invalid checksum by default (on debug builds) because
 of a feature called "incremental build". It's best to debug the process with release builds or disable incremental builds.
 
-Add the .pdb path of your user mode application into the source file path. Without doing so, WinDbg might get stuck 
+Add the .pdb path of your user mode application into the source file path. Without doing so, WinDbg might get stuck if you use reload /f
 while trying to get the symbols (https://stackoverflow.com/questions/38062216/windbg-cant-find-microsoft-symbols).
 After that, perform <code>.reload</code> to reload symbols (in the context of this process). Then, "lm" should show the user mode
 image that you are debugging.
