@@ -372,7 +372,7 @@ PROCESS ffff998ba6f6e280
 
 That allows us to put breakpoints in the context of this process.
 
-### Debugging User Mode Code From Kernel Debugging
+### Debugging User Mode Code From a Kernel Debugging Session
 
 Note that the Timestamp and Checksum of the image must be valid. If the image doesn't have a valid checksum/timestamp, windbg will not
 be able to load the symbols. Compiling the executable with vs2019 results in an invalid checksum by default (on debug builds) because
