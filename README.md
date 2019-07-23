@@ -212,7 +212,7 @@ Moving between process contexts allows placing breakpoints on the process (in us
 searching symbols (because the symbols are loaded)
   
 - Get process id : <code>!process 0 0 myproc.exe</code>
-- Use procID to switch context: <code>.process /i <process_id></code>
+- Use procID to switch context: <code>.process /i <EPROCESS address></code>
 - Continue until the scheduler switches to the desired process context: <code>g</code>
 
 ```
