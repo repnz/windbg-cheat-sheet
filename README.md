@@ -78,7 +78,8 @@ Control-Break - Abort Long Running Operation / Debug Break
 
 - lm (List Modules): Prints list of loaded modules
 - x (Examine): Prints loaded symbols - x <module_name>!<symbol_name> - you can use wildcard on both sides
-
+    - Search for modules: x Ori*!
+    
 ## Breakpoints
 
 - bp - normal breakpoint
