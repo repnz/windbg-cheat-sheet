@@ -271,3 +271,7 @@ After that, perform <code>.reload</code> to reload symbols (in the context of th
 image that you are debugging.
 
 That will allow to put breakpoints by using symbols from this image. :)
+
+## Threads
+
+!thread
