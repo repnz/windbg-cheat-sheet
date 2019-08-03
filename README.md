@@ -30,7 +30,7 @@ Manager" to 8.
 - Restart VM. click F8 and choose "Disable Device Signing Enforcement" - that will allow your driver to be load.
 - At that point the VM will stuck. It will try to connect to the debugger. Click "Run Debugger" in vmmon to connect
 - The debugger will break. 
-- Configure WinDbg Symbols: (File->Symbol File Path) <code>SRV*c:\Symbols*http://msdl.microsoft.com/download/symbols</code>
+- Configure WinDbg Symbols: (File->Symbol File Path) <code>cache*c:\symbols;srv*https://msdl.microsoft.com/download/symbols</code>
   - (Symbols of drivers you develop will be loaded automatically from the same folder of the driver. Copy .pdb to the guest..)
 - Click F5 to continue the OS load or do any command you like.
   
