@@ -5,7 +5,15 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 If you see this and think I missed something cool, open an issue, I'll be 
 happy to learn new stuff. 
 
+## TODO
 
+- dps
+- .reload /f
+- kdfiles: drvmap
+- kdinit
+- using kd.exe
+- disassembly
+- breaking on nt!IopLoadDriver
 
 Books:
 
