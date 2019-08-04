@@ -12,8 +12,9 @@ happy to learn new stuff.
 - kdfiles: drvmap
 - kdinit
 - using kd.exe
-- disassembly
+- disassembly: u, uf, uf /c
 - breaking on nt!IopLoadDriver
+- !pte
 
 Books:
 
