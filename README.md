@@ -16,6 +16,7 @@ happy to learn new stuff.
 - breaking on nt!IopLoadDriver
 - !pte
 - .formats
+- dv
 
 Books:
 
