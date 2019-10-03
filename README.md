@@ -15,6 +15,7 @@ happy to learn new stuff.
 - disassembly: u, uf, uf /c
 - breaking on nt!IopLoadDriver
 - !pte
+- .formats
 
 Books:
 
