@@ -17,7 +17,10 @@ happy to learn new stuff.
 - !pte
 - .formats
 - dv
-
+- !thread 
+- !handle <handle>
+- fix escaping
+	
 Books:
 
 - [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
