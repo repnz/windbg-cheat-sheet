@@ -20,6 +20,7 @@ happy to learn new stuff.
 - !thread 
 - !handle <handle>
 - fix escaping
+- error <ntstatus>
 	
 Books:
 
