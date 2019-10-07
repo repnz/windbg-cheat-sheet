@@ -21,6 +21,7 @@ happy to learn new stuff.
 - !handle <handle>
 - fix escaping
 - error <ntstatus>
+!devobj
 	
 Books:
 
