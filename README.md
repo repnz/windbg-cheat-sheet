@@ -22,6 +22,7 @@ happy to learn new stuff.
 - fix escaping
 - error <ntstatus>
 !devobj
+!drvobj
 	
 Books:
 
