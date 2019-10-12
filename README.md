@@ -130,6 +130,14 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 - bp /p <EPROCESS address> <breakpoint address> - Break on a specific process - 
 	say you want your breakpoint to be on only for a specific process, you can use /p to do it
   
+- bp <options> "<command"> - this will run a windbg command after breaking. You can combine multipile commands using ';' for example:
+
+This command will break at line 385 in the ProcessProtector.c file in the ProcessProtector module and it will print 
+basic process information, a stack trace, and it will continue on.
+```
+bp `ProcessProtector!ProcessProtector.c:385` "!process -1 0; k; g"
+```
+
 ## Analyzing BugChecks
 
 - <code>analyze -v</code>: Shows detailed information about the exception
@@ -210,7 +218,7 @@ PROCESS ffff8906297ce080
     SessionId: 1  Cid: 06f8    Peb: 3877758000  ParentCid: 122c
     DirBase: 77800002  ObjectTable: ffffb088f3ac8880  HandleCount:  33.
     Image: WindowsInspector.Controller.exe
-
+/
 ```
 
 !process 0 0 <process_name>
@@ -239,6 +247,16 @@ PROCESS ffff8906297ce080
     CommitCharge                      540
 
         THREAD ffff890629432080  Cid 06f8.0c6c  Teb: 0000003877759000 Win32Thread: 0000000000000000 RUNNING on processor 0
+```
+
+This is how to show a little bit information about the current process:
+
+```
+kd> !process -1 0
+PROCESS ffff8e8aa3781080
+    SessionId: 1  Cid: 0a20    Peb: 62982f2000  ParentCid: 13ec
+    DirBase: 6b280002  ObjectTable: ffffc68158f6da00  HandleCount: 486.
+    Image: PROCEXP64.exe
 ```
 
 ### Searching for processes
