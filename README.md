@@ -59,6 +59,15 @@ Remember to set the workspace by clicking "Save Workspace" after arranging the w
 you open WinDbg it will save this arrangement.
 
 
+## Initialization Commands
+
+- !sym noisy - this will allow you to understand better why the debugger is stuck:)
+- .kdfiles <map file> - this will save you some time by automatically loading the .sys file from the host machine,
+	this way you won't need to copy the .sys file. The downside is that it doesn't work with user mode executables,
+	so you need to find another method for them (copy pasting or using some kind of share)
+- .reload - this will referesh 
+
+
 ## Installing and Loading Device Drivers
 
 Installing a driver is done by registering it in the registry under the services key. Loading the driver is done by calling the 
