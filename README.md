@@ -51,7 +51,8 @@ Manager" to 8.
 - Configure WinDbg Symbols: (File->Symbol File Path) <code>cache*c:\symbols;srv*https://msdl.microsoft.com/download/symbols</code>
   - (Symbols of drivers you develop will be loaded automatically from the same folder of the driver. Copy .pdb to the guest..)
 - Click F5 to continue the OS load or do any command you like.
-  
+- If the debugger crashes / closes, you can just open a new debugger by clicking the "run debugger" button
+
 ## Settings Workspace
 
 Remember to set the workspace by clicking "Save Workspace" after arranging the windows in the way you like, so next time
