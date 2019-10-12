@@ -110,7 +110,13 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 - bl - list breakpoints
 - bc * / bc <breakpoint_id> - clear breakpoint
 - bp /1 <location> - temporary breakpoint (break 1 time..)
-- Breaking on source lines - find the source line using the status bar and run <code>bp `<sourcefile>:<line>`</code>
+- Breaking on source lines - 
+	- Old Method: Find the source line using the status bar and run <code>bp `<sourcefile>:<line>`</code>
+	- Sometimes this method is too slow because it cannot know which module you are trying to break on, so it'll
+	start downloading symbols of other modules....
+	- bp `module_name!file.cpp:206` is better - specifies the name of the module
+	- You can also use F9 while placing the cursor on a specific line of code.
+
 - bp /p <EPROCESS address> <breakpoint address> - Break on a specific process - 
 	say you want your breakpoint to be on only for a specific process, you can use /p to do it
   
