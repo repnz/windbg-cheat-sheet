@@ -23,6 +23,7 @@ happy to learn new stuff.
 - error <ntstatus>
 !devobj
 !drvobj
+!object
 	
 Books:
 
