@@ -24,7 +24,11 @@ happy to learn new stuff.
 !devobj
 !drvobj
 !object
-?poi(status)
+!devnode 0 1
+?? (_EPROCESS*)@@masm(nt!PsInitialSystemProcess)
+.reload -user	
+- dd, dq, dds, dqs dps
+	
 	
 Books:
 
@@ -155,6 +159,7 @@ bp `ProcessProtector!ProcessProtector.c:385` "!process -1 0; k; g"
 - Use memory window to see raw memory
 - use "dt" to see observe data structures
 - use "??" to evaluate C++ Expressions
+- k - stack trace
 
 ## Processes
 
