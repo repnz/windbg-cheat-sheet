@@ -28,6 +28,8 @@ happy to learn new stuff.
 ?? (_EPROCESS*)@@masm(nt!PsInitialSystemProcess)
 .reload -user	
 - dd, dq, dds, dqs dps
+.shell
+.kdfiles -m \??\c:\dev\file.sys c:\hostdir\file.sys << instead of creating a drv map file
 	
 	
 Books:
