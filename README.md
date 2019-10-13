@@ -337,3 +337,13 @@ That will allow to put breakpoints by using symbols from this image. :)
 ## Threads
 
 !thread
+
+
+## Pool Allocation Breakpoint
+
+This trick is very useful - it can be used to break when a certain tag is used in an allocation.
+
+dd nt!PoolHitTag L1 << read the current pool tag hit
+ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a file will be allocated, we'll break
+
+
