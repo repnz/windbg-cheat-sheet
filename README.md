@@ -24,6 +24,7 @@ happy to learn new stuff.
 !devobj
 !drvobj
 !object
+?poi(status)
 	
 Books:
 
