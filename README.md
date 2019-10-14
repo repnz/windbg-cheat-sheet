@@ -34,6 +34,7 @@ happy to learn new stuff.
 - dt <list head address> <data structure> -l <flink path> <variables to print> - if you are mistaken in the name of the flink memeber,
 	it will show you only the first element in the list.
 - dt nt!_LDR_DATA_TABLE_ENTRY poi(nt!PsLoadedModuleList)
+- !poolfind
 	
 Books:
 
