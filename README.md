@@ -33,7 +33,8 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 	it will show you only the first element in the list.
 - dt nt!_LDR_DATA_TABLE_ENTRY poi(nt!PsLoadedModuleList)
 - !poolfind
-- !kp 
+- !kp, !kc
+- !ioctldecoder
 	
 Books:
 
