@@ -145,8 +145,15 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 
 This command will break at line 385 in the ProcessProtector.c file in the ProcessProtector module and it will print 
 basic process information, a stack trace, and it will continue on.
+Limit the number of times the breakpoint hits to prevent floods:
+
 ```
-bp `ProcessProtector!ProcessProtector.c:385` "!process -1 0; k; g"
+bp /5 `ProcessProtector!ProcessProtector.c:385` "!process -1 0; k; g"
+```
+
+Break right before the process entry point in kernel debugging:
+```
+bp ntdll!LdrpInitializeProcess "bp /1 KERNEL32!BaseThreadInitThunk; g"
 ```
 
 ## Analyzing BugChecks
