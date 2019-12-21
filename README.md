@@ -35,6 +35,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - !poolfind
 - !kp, !kc
 - !ioctldecoder
+- %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
 	
 Books:
 
@@ -48,9 +49,10 @@ Books:
 - use vmware workstation with windows machine installed. 
 - Turn on test signing by running "bcdedit /set testsigning on"
 - Install [VirtualKd](http://sysprogs.com/legacy/virtualkd/)
+  - Put virtualkd in the host in any location you like (I like c:\tools\virtualkd)
   - Run the "target" executable on the guest
   - Run vmmon64.exe / vmmon.exe on the host
-  - Configure windbg.exe path in vmmmon
+  - Configure Windbg Preview this way:
 - To enable "DbgPrint" output inside WinDbg, set the "Debug Print Filter" value under "HKLM\SYSTEM\CurrentControlSet\Control\Session
 Manager" to 8. 
 - Configure VM for debugging: (Verify this is the correct debug port in the settings)
