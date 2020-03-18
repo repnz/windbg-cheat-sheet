@@ -39,6 +39,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
 - For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
 - Use DbgKit for healthier debugging: http://www.andreybazhan.com/dbgkit.html
+- bp RPCRT4!Invoke+0x70 "bp r10; g"
 	
 Books:
 
