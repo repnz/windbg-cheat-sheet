@@ -55,8 +55,8 @@ Books:
   - Run the "target" executable on the guest
   - Run vmmon64.exe / vmmon.exe on the host
   - Configure Windbg Preview this way:
-- To enable "DbgPrint" output inside WinDbg, set the "Debug Print Filter" value under "HKLM\SYSTEM\CurrentControlSet\Control\Session
-Manager" to 8. 
+- To enable "DbgPrint" output inside WinDbg, set the "DEFAULT" value under "HKLM\SYSTEM\CurrentControlSet\Control\Session
+Manager\Debug Print Filter" to 8 (This is what I use in my drivers..)
 - Configure VM for debugging: (Verify this is the correct debug port in the settings)
   - bcdedit /debug on
   - bcdedit /dbgsettings serial debugport:1 baudrate:115200
