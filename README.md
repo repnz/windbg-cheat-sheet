@@ -45,6 +45,10 @@ Books:
 - [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
 - [Windows Kernel Programming](https://www.amazon.com/Windows-Kernel-Programming-Pavel-Yosifovich/dp/1977593372) 
 
+## Disable Windows Defender
+
+- First, turn it off from it's settings: Virus & Threat protection, Real-time protection, turn off
+- Then, follow [this](https://www.prajwaldesai.com/how-to-turn-off-windows-defender-using-group-policy/) to disable it in the group policy.
 
 ## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
 
