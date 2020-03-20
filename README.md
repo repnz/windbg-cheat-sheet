@@ -39,8 +39,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
 - For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
 - Use DbgKit for healthier debugging: http://www.andreybazhan.com/dbgkit.html
-- bp RPCRT4!Invoke+0x70 "bp r10; g"
-	
+
 Books:
 
 - [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
@@ -356,6 +355,37 @@ After that, perform <code>.reload</code> to reload symbols (in the context of th
 image that you are debugging.
 
 That will allow to put breakpoints by using symbols from this image. :)
+
+## Debugging RPC 
+
+- Set a breakpoint on RPC method invocation: ```bp RPCRT4!Invoke```
+
+To get the THREAD id, use the following structures:
+
+```C
+
+PTHREAD ThreadPtr = Teb->ReservedForNtRpc ^ 0x0ABABABABDEDEDEDE;
+
+class THREAD { 
+	ULONGLONG ThreadId; // 0x10
+	RpcCallState* RpcMessage; // 0x20
+}
+
+
+class RpcCallState { 
+	RpcConnectionInformation* RpcConnectionInfo; // 0x130
+	PPORT_MESSAGE PortMessage; // 0x1b8
+}
+
+class RpcConnectionInformation { 
+	AlpcConnectionInformation* AlpcConnectionInformation; // 0x38
+}
+
+class AlpcConnectionInformation { 
+	HANDLE PortHandle; // 0xd0
+}
+```
+
 
 ## Threads
 
