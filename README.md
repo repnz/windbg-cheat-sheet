@@ -9,7 +9,6 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - .reload /f
 - kdfiles: drvmap
 - kdinit
-- using kd.exe
 - disassembly: u, uf, uf /c
 - breaking on nt!IopLoadDriver
 - !pte
@@ -38,8 +37,9 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
 - CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
 - For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
-- Use DbgKit for healthier debugging: http://www.andreybazhan.com/dbgkit.html
-
+- Use DbgKit for object exploration: http://www.andreybazhan.com/dbgkit.html
+- Use "dx" to explore processes, threads, ..
+	
 Books:
 
 - [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
