@@ -48,7 +48,8 @@ Books:
 ## Disable Windows Defender
 
 - First, turn it off from it's settings: Virus & Threat protection, Real-time protection, turn off
-- gpedit.msc is disabled in Windows Home. Download and run [GPEdit Enabler](https://www.itechtics.com/?dl_id=43).
+- gpedit.msc is disabled in Windows Home. Download and run [GPEdit Enabler](https://www.itechtics.com/?dl_id=43). Run as admin and it 
+requires an internet connection..
 - "gpedit.msc" -> Computer Configuration > Administrative Templates > Windows Components > Windows Defender -> Turn Off Windows Defender -> Enabled
 
 ## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
