@@ -48,7 +48,7 @@ Books:
 ## Disable Windows Defender
 
 - First, turn it off from it's settings: Virus & Threat protection, Real-time protection, turn off
-- Then, follow [this](https://www.prajwaldesai.com/how-to-turn-off-windows-defender-using-group-policy/) to disable it in the group policy. "gpedit" (Computer Configuration > Administrative Templates > Windows Components > Windows Defender -> Turn Off Windows Defender -> Enabled
+- gpedit.msc is disabled in Windows Home. Follow [this](https://www.prajwaldesai.com/how-to-turn-off-windows-defender-using-group-policy/) to disable it in the group policy. "gpedit" (Computer Configuration > Administrative Templates > Windows Components > Windows Defender -> Turn Off Windows Defender -> Enabled
 
 ## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
 
