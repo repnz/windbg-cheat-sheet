@@ -39,6 +39,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
 - Use DbgKit for object exploration: http://www.andreybazhan.com/dbgkit.html
 - Use "dx" to explore processes, threads, ..
+- Use "bp /w" to set smart conditional breakpoints
 	
 Books:
 
