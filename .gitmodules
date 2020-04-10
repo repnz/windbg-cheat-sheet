@@ -4,3 +4,6 @@
 [submodule "scripts/microsoft_samples"]
 	path = scripts/microsoft_samples
 	url = https://github.com/microsoft/WinDbg-Samples
+[submodule "scripts/hugsy_scripts"]
+	path = scripts/hugsy_scripts
+	url = https://github.com/hugsy/windbg_js_scripts
