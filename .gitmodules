@@ -1,0 +1,3 @@
+[submodule "scripts/0vercl0k_scripts"]
+	path = scripts/0vercl0k_scripts
+	url = https://github.com/0vercl0k/windbg-scripts.git

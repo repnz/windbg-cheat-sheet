@@ -403,3 +403,5 @@ dd nt!PoolHitTag L1 << read the current pool tag hit
 ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a file will be allocated, we'll break
 
 
+## Windbg Scripting
+
