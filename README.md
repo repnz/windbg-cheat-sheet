@@ -42,6 +42,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - Use "bp /w" to set smart conditional breakpoints
 - Jump to address: r rip = fffff802`64c763f0 
 - Change the value of register: r <reg_name> = <reg_value>
+- .pagein
 	
 Books:
 
