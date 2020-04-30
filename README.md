@@ -47,6 +47,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 ```
 	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert ".reload;bp /t 1 apcinjector!main;g"
 ```
+- Wow64 Debugging: https://docs.microsoft.com/en-us/windows/win32/winprog64/debugging-wow64
 	
 Books:
 
