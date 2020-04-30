@@ -43,6 +43,10 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - Jump to address: r rip = fffff802`64c763f0 
 - Change the value of register: r <reg_name> = <reg_value>
 - .pagein
+- Breakpoint in process by name after DLLs are loaded: 
+```
+	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert 
+```
 	
 Books:
 
