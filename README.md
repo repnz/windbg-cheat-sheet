@@ -46,6 +46,8 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - Breakpoint in process by name after DLLs are loaded: 
 ```
 	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert 
+	.reload
+	bp apcinjector!main
 ```
 	
 Books:
