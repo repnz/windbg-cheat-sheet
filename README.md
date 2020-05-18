@@ -33,6 +33,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - dt nt!_LDR_DATA_TABLE_ENTRY poi(nt!PsLoadedModuleList)
 - !poolfind
 - !kp, !kc
+- .frame <id>
 - !ioctldecoder
 - %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
 - CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
