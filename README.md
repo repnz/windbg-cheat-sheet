@@ -21,6 +21,8 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - !devobj
 - !drvobj
 - !object
+- !error <win32_error>
+- !error <ntstatus> nt
 - !devnode 0 1
 - ?? (_EPROCESS*)@@masm(nt!PsInitialSystemProcess)
 - .reload -user	
