@@ -422,6 +422,15 @@ ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a f
 
 ## Dotnet Debugging
 
+- .NET Internals: https://docs.microsoft.com/en-us/archive/msdn-magazine/2005/may/net-framework-internals-how-the-clr-creates-runtime-objects
+
+### .NET Internals summary for debugging
+
+To debug .NET apps, it's important to be familiar with some concepts:
+
+- AppDomain: An instance of 
+- Method Table:  
+- 
 The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes. 
 
 ### Origin of the name
@@ -495,6 +504,10 @@ This command means: Load the "sos" plugin from a loaded DLL.
 ```
 .loadby sos clr
 ```
+
+
+### Finding information about a method/type
+
 
 
 
