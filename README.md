@@ -416,4 +416,81 @@ ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a f
 
 
 ## Windbg Scripting
+..
+..
+..
+
+## Dotnet Debugging
+
+The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes. 
+
+### Origin of the name
+
+*The original name of the CLR team (chosen by team founder and former Microsoft Distinguished Engineer Mike Toutonghi) was "Lighting". Larry Sullivan's dev team created an ntsd extension dll to help facilitate the bootstrapping of v1.0. We called it strike.dll (get it? "Lightning Strike"? yeah, I know, ba'dump bum). PSS really needed this in order to give us information back to the team when it was time to debug nasty stress failures, which are almost always done with the Windows debugger stack. But we didn't want to hand out our full strike.dll, because it contained some "dangerous" commands that if you really didn't have our source code could cause you confusion and pain (even to other Microsoft teams). So I pushed the team to create "Son of Strike" (Simon from our dev takes credit/blame for this), and we shipped it with the product starting with Everett (aka V1.1).*
+
+
+
+### Loading the SOS plugin
+
+The SOS windbg extension is loaded from the .NET runtime DLL. We first put a breakpoint on the MSCORLIB DLL (A .NET DLL that provides the .NET standard libraries)
+
+```
+> sxe ld:mscorlib
+> g
+ntdll!RtlUserThreadStart:
+00007ffb`0290ce30 4883ec78        sub     rsp,78h
+0:007> sxe ld:mscorlib
+0:007> g
+ModLoad: 00007ffb`028a0000 00007ffb`02a90000   ntdll.dll
+ModLoad: 00007ffb`024f0000 00007ffb`02593000   C:\windows\System32\ADVAPI32.dll
+ModLoad: 00007ffb`01c60000 00007ffb`01cfe000   C:\windows\System32\msvcrt.dll
+ModLoad: 00007ffb`00d90000 00007ffb`00e27000   C:\windows\System32\sechost.dll
+ModLoad: 00007ffa`f5550000 00007ffa`f55b4000   C:\windows\SYSTEM32\MSCOREE.DLL
+ModLoad: 00007ffb`02670000 00007ffb`02790000   C:\windows\System32\RPCRT4.dll
+ModLoad: 00007ffb`00980000 00007ffb`00a32000   C:\windows\System32\KERNEL32.dll
+ModLoad: 00007ffa`ffc90000 00007ffa`fff34000   C:\windows\System32\KERNELBASE.dll
+ModLoad: 00007ffa`f4570000 00007ffa`f461a000   C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscoreei.dll
+ModLoad: 00007ffb`00c20000 00007ffb`00c72000   C:\windows\System32\SHLWAPI.dll
+ModLoad: 00007ffb`01620000 00007ffb`01955000   C:\windows\System32\combase.dll
+ModLoad: 00007ffa`fff40000 00007ffb`0003a000   C:\windows\System32\ucrtbase.dll
+ModLoad: 00007ffb`000a0000 00007ffb`00120000   C:\windows\System32\bcryptPrimitives.dll
+ModLoad: 00007ffb`024c0000 00007ffb`024e6000   C:\windows\System32\GDI32.dll
+ModLoad: 00007ffa`ff8d0000 00007ffa`ff8f1000   C:\windows\System32\win32u.dll
+ModLoad: 00007ffa`ffaf0000 00007ffa`ffc86000   C:\windows\System32\gdi32full.dll
+ModLoad: 00007ffa`ff900000 00007ffa`ff99e000   C:\windows\System32\msvcp_win.dll
+ModLoad: 00007ffb`01d00000 00007ffb`01e95000   C:\windows\System32\USER32.dll
+ModLoad: 00007ffb`00ab0000 00007ffb`00ade000   C:\windows\System32\IMM32.DLL
+ModLoad: 00007ffa`ff7d0000 00007ffa`ff7e1000   C:\windows\System32\kernel.appcore.dll
+ModLoad: 00007ffa`f4c80000 00007ffa`f4c8a000   C:\windows\SYSTEM32\VERSION.dll
+ModLoad: 00007ffa`d4880000 00007ffa`d5221000   C:\Windows\Microsoft.NET\Framework64\v2.0.50727\mscorwks.dll
+ModLoad: 00000000`51ed0000 00000000`51f99000   C:\windows\WinSxS\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9659_none_88dfc6bf2faefcc6\MSVCR80.dll
+ModLoad: 00007ffb`00f30000 00007ffb`01617000   C:\windows\System32\shell32.dll
+ModLoad: 00007ffb`00120000 00007ffb`0016a000   C:\windows\System32\cfgmgr32.dll
+ModLoad: 00007ffb`00ce0000 00007ffb`00d89000   C:\windows\System32\shcore.dll
+ModLoad: 00007ffb`00170000 00007ffb`008f2000   C:\windows\System32\windows.storage.dll
+ModLoad: 00007ffa`ff7f0000 00007ffa`ff813000   C:\windows\System32\profapi.dll
+ModLoad: 00007ffa`ff780000 00007ffa`ff7ca000   C:\windows\System32\powrprof.dll
+ModLoad: 00007ffa`ff750000 00007ffa`ff760000   C:\windows\System32\UMPDC.dll
+ModLoad: 00007ffb`00900000 00007ffb`00917000   C:\windows\System32\cryptsp.dll
+ModLoad: 00007ffa`d3500000 00007ffa`d43e4000   C:\windows\assembly\NativeImages_v2.0.50727_64\mscorlib\712d042affe876859328e2d4029c7297\mscorlib.ni.dll
+ntdll!NtMapViewOfSection+0x14:
+00007ffb`0293c574 c3              ret
+```
+After that, we can run a command to load the SOS plugin from the runtime DLL. the name of the runtime DLL was changed in .NET 4, so we have to specify a different name. 
+This command means: Load the "sos" plugin from a loaded DLL.
+
+##### .NET 2
+
+```
+.loadby sos mscorwks
+```
+
+##### .NET 4+
+
+```
+.loadby sos clr
+```
+
+
+
 
