@@ -435,6 +435,13 @@ The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes.
 The SOS windbg extension is loaded from the .NET runtime DLL. We first put a breakpoint on the MSCORLIB DLL (A .NET DLL that provides the .NET standard libraries)
 
 ```
+> sxe ld:mscorlib
+> g
+```
+
+For example:
+
+```
 ntdll!RtlUserThreadStart:
 00007ffb`0290ce30 4883ec78        sub     rsp,78h
 0:007> sxe ld:mscorlib
