@@ -53,6 +53,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 ```
 - Wow64 Debugging: https://docs.microsoft.com/en-us/windows/win32/winprog64/debugging-wow64
 - .thread <address> - set register context
+- Replace existing system drivers with kdfiles: https://kobyk.wordpress.com/2008/07/04/replacing-boot-load-drivers-with-the-windows-boot-debugger/
 	
 Books:
 
