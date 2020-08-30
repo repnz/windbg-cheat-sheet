@@ -312,8 +312,8 @@ PROCESS ffff8e8aa3781080
 Moving between process contexts allows placing breakpoints on the process (in user mode), seeing the state of the process, 
 searching symbols (because the symbols are loaded)
   
-- Get process id : <code>!process 0 0 myproc.exe</code>
-- Use procID to switch context: <code>.process /i <EPROCESS address></code>
+- Get the EPROCESS address : <code>!process 0 0 myproc.exe</code>
+- Use the address to switch context: <code>.process /i <EPROCESS address></code>
 - Continue until the scheduler switches to the desired process context: <code>g</code>
 
 ```
