@@ -199,6 +199,28 @@ bp ntdll!LdrpInitializeProcess "bp /1 KERNEL32!BaseThreadInitThunk; g"
 - use "??" to evaluate C++ Expressions
 - k - stack trace
 
+#### Function arguments
+
+When debugging, it's useful to see the function arguments.
+
+The first 4 arguments are in: rcx, rdx, r8, r9. Also, the caller allocates a shadow space for them, but the caller does not 
+store the arguments in this space (it's reserved for the callee)
+
+
+```
+kd> dq /c1 rsp
+fffffd08`ee125dc8  fffff801`71222935 --> the return address. only relevant inside the function
+fffffd08`ee125dd0  00000025`196fdb50 --> arg1 shadow
+fffffd08`ee125dd8  00000000`00000000 --> arg2 shadow
+fffffd08`ee125de0  00000000`00000000 --> arg3 shadow
+fffffd08`ee125de8  00000000`00000000 --> arg4 shadow
+fffffd08`ee125df0  00007fff`00000002 --> arg5
+fffffd08`ee125df8  00000025`196fda48 --> arg6
+fffffd08`ee125e00  ffffb484`5254e080 --> arg7
+fffffd08`ee125e08  fffff801`71449ebf --> ar8
+fffffd08`ee125e10  00000000`00000000 -->....
+fffffd08`ee125e18  00000000`00000000
+```
 ## Processes
 
 - cid - CID in the windows structures means client id. Most of the time it refers to a ProcessId or a ThreadId but 
