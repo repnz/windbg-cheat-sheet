@@ -14,6 +14,7 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - !pte
 - .formats
 - dv
+- .f+ / .f- (Or Ctrl Up/Down)
 - !thread 
 - !handle <handle>
 - fix escaping
