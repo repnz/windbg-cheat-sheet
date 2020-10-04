@@ -535,7 +535,7 @@ This command means: Load the "sos" plugin from a loaded DLL.
 
 - !dumpdomain - List all application domains.
 - !name2ee * <full method/type/assembly name>
-
+- !dumpmt -md <method_table_address> - List all the methods in a method table. Each object has a method table
 
 
 
