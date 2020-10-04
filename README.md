@@ -533,6 +533,8 @@ This command means: Load the "sos" plugin from a loaded DLL.
 
 ### Finding information about a method/type
 
+- !dumpdomain - List all application domains.
+- !name2ee * <full method/type/assembly name>
 
 
 
