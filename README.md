@@ -537,6 +537,6 @@ This command means: Load the "sos" plugin from a loaded DLL.
 - !name2ee * <full method/type/assembly name>
 - !dumpmt -md <method_table_address> - List all the methods in a method table. Each object has a method table
 - !DumpMD /d <method_descriptor_address> - Show information about a method descriptor.
-
+- !ip2md <address> - get method descriptor by address. 
 
 
