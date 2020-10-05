@@ -538,5 +538,6 @@ This command means: Load the "sos" plugin from a loaded DLL.
 - !dumpmt -md <method_table_address> - List all the methods in a method table. Each object has a method table
 - !DumpMD /d <method_descriptor_address> - Show information about a method descriptor.
 - !ip2md <address> - get method descriptor by address. 
-
-
+- !dumpil <descriptor> - output IL disassembly of a method
+- !clrstack - show stack trace for CLR ONLY.
+- !dumpstack - show combined stack trace for CLR and native code.
