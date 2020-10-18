@@ -541,3 +541,5 @@ This command means: Load the "sos" plugin from a loaded DLL.
 - !dumpil <descriptor> - output IL disassembly of a method
 - !clrstack - show stack trace for CLR ONLY.
 - !dumpstack - show combined stack trace for CLR and native code.
+- !do <object_address> - Dump a managed object
+- !dso - Dump the objects on the stack
