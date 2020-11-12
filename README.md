@@ -530,6 +530,13 @@ This command means: Load the "sos" plugin from a loaded DLL.
 .loadby sos clr
 ```
 
+#### Load SOS in a dump file
+
+In dump files you get from other computers, you need to load dll using an absolute path. So first, you need to find the .net directory that matches the .NET version that you debug (2 vs 4) - then, you need to load sos.dll from this path. For example:
+
+```
+.load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\sos.dll
+```
 
 ### Finding information about a method/type
 
@@ -543,3 +550,5 @@ This command means: Load the "sos" plugin from a loaded DLL.
 - !dumpstack - show combined stack trace for CLR and native code.
 - !do <object_address> - Dump a managed object
 - !dso - Dump the objects on the stack
+- ~ -> list threads in user mode debugger
+	
