@@ -1,7 +1,7 @@
 # Kernel Debugging & WinDbg Cheat Sheet
 
-My personal cheat sheet for using WinDbg for kernel debugging. 
-This cheat sheet / mini guide will be updated as I do new stuff with WinDbg. 
+My personal cheat sheet for using WinDbg for kernel debugging.
+This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 
 ## TODO
 
@@ -56,46 +56,103 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - Wow64 Debugging: https://docs.microsoft.com/en-us/windows/win32/winprog64/debugging-wow64
 - .thread <address> - set register context
 - Replace existing system drivers with kdfiles: https://kobyk.wordpress.com/2008/07/04/replacing-boot-load-drivers-with-the-windows-boot-debugger/
-	
-Books:
 
-- [Windows Internals](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
-- [Windows Kernel Programming](https://www.amazon.com/Windows-Kernel-Programming-Pavel-Yosifovich/dp/1977593372) 
+## Kernel Debugging Setup
 
-## Disable Windows Defender
+### Installing the debugging tools
 
-- First, turn it off from it's settings: Virus & Threat protection, Real-time protection, turn off
-- gpedit.msc is disabled in Windows Home. Download and run [GPEdit Enabler](https://www.itechtics.com/?dl_id=43). Run as admin and it 
-requires an internet connection..
-- "gpedit.msc" -> Computer Configuration > Administrative Templates > Windows Components > Windows Defender -> Turn Off Windows Defender -> Enabled
+- To use windbg, you have to install the [Windows Debugging Tools](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/).
+- I recommend to install Windbg Preview from the Windows Store.
 
-## Kernel Debugging Setup - Vmware, Windbg, VirtualKd 
+### Setting a VM
 
-- Install [Windows Debugging Tools](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/)
-- use vmware workstation with windows machine installed. 
-- Turn on test signing by running "bcdedit /set testsigning on"
-- Install [VirtualKd](http://sysprogs.com/legacy/virtualkd/)
-  - Put virtualkd in the host in any location you like (I like c:\tools\virtualkd)
-  - Run the "target" executable on the guest
-  - Run vmmon64.exe / vmmon.exe on the host
-  - Configure Windbg Preview this way:
-- To enable "DbgPrint" output inside WinDbg, set the "IHVDRIVER" value under "HKLM\SYSTEM\CurrentControlSet\Control\Session
-Manager\Debug Print Filter" to DWORD 0xf (This is what I use in my drivers..)
-- Configure VM for debugging: (Verify this is the correct debug port in the settings)
-  - bcdedit /debug on
-  - bcdedit /dbgsettings serial debugport:1 baudrate:115200
-- Restart VM. click F8 and choose "Disable Device Signing Enforcement" - that will allow your driver to be load.
-- At that point the VM will stuck. It will try to connect to the debugger. Click "Run Debugger" in vmmon to connect
-- The debugger will break. 
-- Configure WinDbg Symbols: (File->Symbol File Path) <code>cache\*c:\symbols;srv\*https://msdl.microsoft.com/download/symbols</code>
-- Click F5 to continue the OS load or do any command you like.
+Create a VM in Vmware Workstation and install Windows from ISO.
+
+### Disable Windows Defender
+
+When setting up a VM for debugging, it's useful to disable Windows Defender. It's recommended
+for a couple of reasons:
+
+- To save resources in the VM
+- In case you want to execute malicious software, you don't want defender to prevent it's execution.
+
+Follow these steps:
+
+1. Turn it off from it's settings: Virus & Threat protection, Real-time protection, turn off.
+Windows defender will start again in case you reboot, so we need to perform additional steps.
+2. We can disable Windows Defender using gpedit.msc. In case your setup is Windows Home, gpedit
+is disabled, so you need to download and run [GPEdit Enabler](https://www.itechtics.com/?dl_id=43). Run as admin and make sure you have an internet connection.
+3. Run "gpedit.msc" -> Computer Configuration > Administrative Templates > Windows Components > Windows Defender -> Turn Off Windows Defender -> Enabled
+
+### Install VirtualKd
+
+VirtualKd enables you to debug a VM by connecting over a named pipe.
+
+- Download [VirtualKd Redux](https://github.com/4d61726b/VirtualKD-Redux/releases)
+- The redux version is a newer version that supports Vmware 15 and has a few bugfixes.
+- Extract VirtualKd in the host in any location you like (I like c:\tools\virtualkd)
+- Run the "target" executable inside the guest
+- Run vmmon64.exe / vmmon.exe on the host (According to the host's architecture)
+- Configure the path of Windbg / Windbg Preview in vmmon.
+- Make sure "Start Debugger Automatically" is not marked.
+
+### Configure VM for debugging
+
+Run the following commands in an admin command line.
+
+- ```bcdedit /set testsigning on```
+- ```bcdedit /debug on```
+- ```bcdedit /dbgsettings serial debugport:1 baudrate:115200```
+
+### Connecting to the debugger
+
+After these preparations, we can connect to the debugger by doing these steps:
+
+1. Restart VM. click F8 and choose "Disable Device Signing Enforcement" - that will allow your driver to be load.  
+2. At that point the VM will stuck. It will wait for the debugger to connect. Click "Run Debugger" in VMMON to connect
+
+### Configuring Windbg
+
+Now, the debugger should be connected to the VM. We need to setup some configurations in the
+debugger:
+
+- Setup symbols server: This command will set the symbol server to allow you to inspect Microsoft
+symbols and also cache the symbols in a local directory:
+
+```bat
+.sympath cache\*c:\symbols;srv\*https://msdl.microsoft.com/download/symbols
+```
+
 - If the debugger crashes / closes, you can just open a new debugger by clicking the "run debugger" button
+- Arrange the windows / font however you like.
 
-## Settings Workspace
+If you use the old Windbg, you should use "Save Workspace" after arranging the windows in the way you like, so next time you open WinDbg it will save this arrangement. It will also restore 
+the symbol path.
 
-Remember to set the workspace by clicking "Save Workspace" after arranging the windows in the way you like, so next time
-you open WinDbg it will save this arrangement.
+### Configuring DbgPrint output
 
+When debugging a driver, It's useful to be able to call [DbgPrintEx](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex) and see messages in the debugger
+window. By default, all DbgPrint calls are filtered out. There are 3 ways to enable debugger messages:
+
+1. In windbg, run ```ed nt!Kd_DEFAULT_MASK 0xF```. Kd_DEFAULT_MASK is a global variable inside 
+ntoskrnl that is checked before printing messages to the debugger. If you write 0xF to this variable it means you want to get all messages. You will need to do this every time the machine reboots.
+2. If you don't want to edit this variable every time the machine reboots, you can configure this
+via registry. Run the following command (THIS REQUIRES A REBOOT.)
+
+```bat
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter" /ve /t REG_DWORD /d 15
+```
+
+Because we use the "default mask" here you'll start to see every DbgPrint from all drivers so it can become pretty noisy. The other option is to filter by ComponentId. When you call DbgPrintEx, the first argument is a component id. Instead of setting the Kd_DEFAULT_MASK variable, you can
+set a component-specific mask. For example:
+
+1. Make sure that when you call DbgPrintEx, you specify the ```DPFLTR_IHVDRIVER_ID``` component.
+2. Run the following command, to edit this component's mask:  ```ed nt!Kd_IHVDRIVER_Mask 0xf```
+3. You can do it in the registry too, run the following command:
+
+```bat
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter" /v IHVDRIVER /t REG_DWORD /d 15
+``` 
 
 ## Initialization Commands
 
@@ -103,7 +160,7 @@ you open WinDbg it will save this arrangement.
 - .kdfiles <map file> - this will save you some time by automatically loading the .sys file from the host machine,
 	this way you won't need to copy the .sys file. The downside is that it doesn't work with user mode executables,
 	so you need to find another method for them (copy pasting or using some kind of share)
-- .reload - this will referesh 
+- .reload - this will referesh the symbols.
 
 
 ## Installing and Loading Device Drivers
