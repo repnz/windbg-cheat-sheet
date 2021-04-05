@@ -3,58 +3,6 @@
 My personal cheat sheet for using WinDbg for kernel debugging.
 This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 
-## TODO
-
-- dps
-- .reload /f
-- kdfiles: drvmap
-- kdinit
-- disassembly: u, uf, uf /c
-- !pte
-- .formats
-- dv
-- .f+ / .f- (Or Ctrl Up/Down)
-- !thread
-- !handle <handle>
-- error <ntstatus>
-- !devobj
-- !drvobj
-- !object
-- !error <win32_error>
-- !error <ntstatus> nt
-- !devnode 0 1
-- lmu
-- ?? (_EPROCESS*)@@masm(nt!PsInitialSystemProcess)
-- .reload -user	
-- dd, dq, dds, dqs dps
-.shell
-- .kdfiles -m file c:\\hostdir\\file.sys << instead of creating a drv map file
-- dt poi(nt!PsLoadedModuleList) nt!_LDR_DATA_TABLE_ENTRY -l InLoadOrderLinks.Flink BaseDllName EntryPoint
-- dt <list head address> <data structure> -l <flink path> <variables to print> - if you are mistaken in the name of the flink member,
-	it will show you only the first element in the list.
-- dt nt!_LDR_DATA_TABLE_ENTRY poi(nt!PsLoadedModuleList)
-- !poolfind
-- !kp, !kc
-- .frame <id>
-- !ioctldecoder
-- %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
-- CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
-- For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
-- Use DbgKit for object exploration: http://www.andreybazhan.com/dbgkit.html
-- Use "dx" to explore processes, threads, ..
-- Use "bp /w" to set smart conditional breakpoints
-- Jump to address: r rip = fffff802`64c763f0 
-- dx -id 0, 0, <process_object> <expression>
-- Change the value of register: r <reg_name> = <reg_value>
-- .pagein
-- Breakpoint in process by name after DLLs are loaded: 
-```
-	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert ".reload;bp /t 1 apcinjector!main;g"
-```
-- Wow64 Debugging: https://docs.microsoft.com/en-us/windows/win32/winprog64/debugging-wow64
-- .thread <address> - set register context
-- Replace existing system drivers with kdfiles: https://kobyk.wordpress.com/2008/07/04/replacing-boot-load-drivers-with-the-windows-boot-debugger/
-
 ## Kernel Debugging Setup
 
 ### Installing the debugging tools
@@ -116,8 +64,8 @@ debugger:
 
 - Setup symbols server: There are 2 ways to setup symbols path:
   - Environment Variable: This is the easier way I typically use. Set a new environment variable named _NT_SYMBOL_PATH with the
-    following value: ```srv*C:\Symbols\Sym*http://msdl.microsoft.com/download/symbols"```
-  - You can also configure the symbols using a debugger command like this: ```.sympath cache\*c:\symbols;srv\*https://msdl.microsoft.com/download/symbols```
+    following value: ```srv*c:\symbols\sym*http://msdl.microsoft.com/download/symbols"```
+  - You can also configure the symbols using a debugger command like this: ```.sympath srv*c:\symbols\sym*http://msdl.microsoft.com/download/symbols"```
 
 - If the debugger crashes / closes, you can just open a new debugger by clicking the "run debugger" button
 - Arrange the windows / font however you like.
@@ -211,22 +159,22 @@ These are the commands for int3 breakpoints.
 - Breakpoint On DriverEntry - If your driver is not loaded yet, you cannot use "bp MyDriver!DriverEntry" because this symbol
 is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded. Another trick to break at the load of drivers (Useful in case you don't have symbols) is breaking
 in ntoskrnl.exe where DriverEntry is called. (For example, IopLoadDriver)
-- bl - list breakpoints
-- bc * / bc <breakpoint_id> - clear breakpoint
-- bp /1 <location> - temporary breakpoint (break 1 time..)
+- ```bl``` - list breakpoints
+- ```bc *``` / ```bc <breakpoint_id>``` - clear breakpoint
+- ```bp /1 <location>``` - temporary breakpoint (break 1 time..)
 - Breaking on source lines - 
+	- You can use F9 while placing the cursor on a specific line of code.
 	- Old Method: Find the source line using the status bar and run <code>bp `<sourcefile>:<line>`</code>
 	- Sometimes this method is too slow because it cannot know which module you are trying to break on, so it'll
 	start downloading symbols of other modules....
-	- bp `module_name!file.cpp:206` is better - specifies the name of the module
-	- You can also use F9 while placing the cursor on a specific line of code.
+	- ```bp `module_name!file.cpp:206` ``` is better - specifies the name of the module
 
-- bp /p <EPROCESS address> <breakpoint address> - Break on a specific process - 
+- ```bp /p <EPROCESS address> <breakpoint address>``` - Break on a specific process - 
 	say you want your breakpoint to be on only for a specific process, you can use /p to do it
   
-- bp /t <ETHREAD address> <breakpoint address> - same as above, for threads.
+- ```bp /t <ETHREAD address> <breakpoint address>``` - same as above, for threads.
 
-- bp <options> "<command"> - this will run a windbg command after breaking. You can combine multipile commands using ';' for example:
+- ```bp <options> "<command">``` - this will run a windbg command after breaking. You can combine multipile commands using ';' for example:
 
 This command will break at line 385 in the ProcessProtector.c file in the ProcessProtector module and it will print 
 basic process information, a stack trace, and it will continue on.
@@ -251,17 +199,17 @@ Conditional breakpoints allows you to break if a some DX expression evaluates to
 
 ## Tracing and Stepping
 
-- (F5) g : (go) continue
+- (F5) ```g``` : (go) continue
 - (F10) : step over
 - (F11) : step into
-- tt - Trace until next return
+- ```tt``` - Trace until next return
 
 ## Analyzing Program State
 
 - Use memory window to see raw memory
 - use "dt" to see observe data structures
-- use "??" to evaluate C++ Expressions
-- k - stack trace
+- use "dx" to evaluate C++ Expressions
+- ```k``` - stack trace
 
 #### Function arguments
 
@@ -323,7 +271,7 @@ PROCESS ffff8906293a1080
 
 ### Listing processes
 
-.tlist - <process_id>:<process_name>
+```.tlist``` - <process_id>:<process_name>
 
 ```
 0n17636 chrome.exe
@@ -335,7 +283,7 @@ PROCESS ffff8906293a1080
 0n13176 cmd.exe
 ```
 
-!process 0 0 
+```!process 0 0```
 
 ```
 
@@ -351,7 +299,7 @@ PROCESS ffff8906297ce080
 /
 ```
 
-!process 0 0 <process_name>
+```!process 0 0 <process_name>```
 
 ```
 kd> !process 0 0 WindowsInspector.Controller.exe
@@ -491,15 +439,15 @@ class AlpcConnectionInformation {
 
 ## Threads
 
-!thread
+```!thread```
 
 
 ## Pool Allocation Breakpoint
 
 This trick is very useful - it can be used to break when a certain tag is used in an allocation.
 
-dd nt!PoolHitTag L1 << read the current pool tag hit
-ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a file will be allocated, we'll break
+```dd nt!PoolHitTag L1``` - read the current pool tag hit
+```ed nt!PoolHitTag 'eliF'``` - set the current pool tag hit to 'File'. Each time a file will be allocated, we'll break
 
 
 ## Debugger Expressions
@@ -519,14 +467,8 @@ Some simple examples (More examples later)
 
 - .NET Internals: https://docs.microsoft.com/en-us/archive/msdn-magazine/2005/may/net-framework-internals-how-the-clr-creates-runtime-objects
 
-### .NET Internals summary for debugging
 
-To debug .NET apps, it's important to be familiar with some concepts:
-
-- AppDomain: An instance of 
-- Method Table:  
-- 
-The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes. 
+The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes.
 
 ### Origin of the name
 
@@ -600,8 +542,63 @@ In dump files you get from other computers, you need to load dll using an absolu
 
 There are 2 ways to put a breakpoint on a managed method:
 
-1 - Find the address of jitted code using ```!dumpmd``` and use the regular ```bp``` command.
-2 - If the method is not jitted yet, you can use the ```!bpmd``` command.
+1. Find the address of jitted code using ```!dumpmd``` and use the regular ```bp``` command.
+2. If the method is not jitted yet, you can use the ```!bpmd``` command.
 
 
 ## Minifilter Debugging
+
+....
+
+
+## TODO
+
+- dps
+- .reload /f
+- kdfiles: drvmap
+- kdinit
+- disassembly: u, uf, uf /c
+- !pte
+- .formats
+- dv
+- .f+ / .f- (Or Ctrl Up/Down)
+- !thread
+- !handle <handle>
+- error <ntstatus>
+- !devobj
+- !drvobj
+- !object
+- !error <win32_error>
+- !error <ntstatus> nt
+- !devnode 0 1
+- lmu
+- ?? (_EPROCESS*)@@masm(nt!PsInitialSystemProcess)
+- .reload -user	
+- dd, dq, dds, dqs dps
+.shell
+- .kdfiles -m file c:\\hostdir\\file.sys << instead of creating a drv map file
+- dt poi(nt!PsLoadedModuleList) nt!_LDR_DATA_TABLE_ENTRY -l InLoadOrderLinks.Flink BaseDllName EntryPoint
+- dt <list head address> <data structure> -l <flink path> <variables to print> - if you are mistaken in the name of the flink member,
+	it will show you only the first element in the list.
+- dt nt!_LDR_DATA_TABLE_ENTRY poi(nt!PsLoadedModuleList)
+- !poolfind
+- !kp, !kc
+- .frame <id>
+- !ioctldecoder
+- %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
+- CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
+- For vmware 15: https://github.com/4d61726b/VirtualKD-Redux
+- Use DbgKit for object exploration: http://www.andreybazhan.com/dbgkit.html
+- Use "dx" to explore processes, threads, ..
+- Use "bp /w" to set smart conditional breakpoints
+- Jump to address: r rip = fffff802`64c763f0 
+- dx -id 0, 0, <process_object> <expression>
+- Change the value of register: r <reg_name> = <reg_value>
+- .pagein
+- Breakpoint in process by name after DLLs are loaded: 
+```
+	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert ".reload;bp /t 1 apcinjector!main;g"
+```
+- Wow64 Debugging: https://docs.microsoft.com/en-us/windows/win32/winprog64/debugging-wow64
+- .thread <address> - set register context
+- Replace existing system drivers with kdfiles: https://kobyk.wordpress.com/2008/07/04/replacing-boot-load-drivers-with-the-windows-boot-debugger/
