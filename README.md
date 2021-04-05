@@ -10,14 +10,12 @@ This cheat sheet / mini guide will be updated as I do new stuff with WinDbg.
 - kdfiles: drvmap
 - kdinit
 - disassembly: u, uf, uf /c
-- breaking on nt!IopLoadDriver
 - !pte
 - .formats
 - dv
 - .f+ / .f- (Or Ctrl Up/Down)
-- !thread 
+- !thread
 - !handle <handle>
-- fix escaping
 - error <ntstatus>
 - !devobj
 - !drvobj
@@ -116,18 +114,15 @@ After these preparations, we can connect to the debugger by doing these steps:
 Now, the debugger should be connected to the VM. We need to setup some configurations in the
 debugger:
 
-- Setup symbols server: This command will set the symbol server to allow you to inspect Microsoft
-symbols and also cache the symbols in a local directory:
-
-```bat
-.sympath cache\*c:\symbols;srv\*https://msdl.microsoft.com/download/symbols
-```
+- Setup symbols server: There are 2 ways to setup symbols path:
+  - Environment Variable: This is the easier way I typically use. Set a new environment variable named _NT_SYMBOL_PATH with the
+    following value: ```srv*C:\Symbols\Sym*http://msdl.microsoft.com/download/symbols"```
+  - You can also configure the symbols using a debugger command like this: ```.sympath cache\*c:\symbols;srv\*https://msdl.microsoft.com/download/symbols```
 
 - If the debugger crashes / closes, you can just open a new debugger by clicking the "run debugger" button
 - Arrange the windows / font however you like.
 
-If you use the old Windbg, you should use "Save Workspace" after arranging the windows in the way you like, so next time you open WinDbg it will save this arrangement. It will also restore 
-the symbol path.
+If you use the old Windbg, you should use "Save Workspace" after arranging the windows in the way you like, so next time you open WinDbg it will save this arrangement. It will also restore the symbol path.
 
 ### Configuring DbgPrint output
 
@@ -184,34 +179,38 @@ stop the driver, recompile, move the files into the VM, and start the driver aga
 
 ## General WinDbg
 
-.<command> - run a command. This command is built-into the debugger
-!<command> - run an extension. Some extensions arrive by default, like "!process"
-Control-Break - Abort Long Running Operation / Debug Break
-
-
-## Symbols
-
-- .reload to reload symbols of loaded modules. Typically used to load symbols of modules that weren't loaded before
-- You may want to use <code>!sym noisy</code> to diagnose symbol loading errors.
-- .reload /u - unload symbols. This is used to release the .pdb file of compiled code.
-  - Sometimes it's needed to forcefully close handles to PDB files because WinDbg does not close them.
-  (using process explorer or process hacker..)
+- ```.<command>``` - run a command. This command is built-into the debugger
+- ```!<command>``` - run an extension. Some extensions arrive by default, like "!process"
+- Control-Break - Abort Long Running Operation / Debug Break
 
 ## Exploring Modules And Symbols
 
-- lm (List Modules): Prints list of loaded modules
-- x (Examine): Prints loaded symbols - x <module_name>!<symbol_name> - you can use wildcard on both sides
-    - Search for modules: x Ori*!
+Symbols are important when examining modules. When examining a certain module we always need to verify it's symbols
+are loaded. We can use the ```lm``` command to see which modules are loaded right now - for each module we can see the
+status of the symbols. Basically information about loaded modules is not 'updated' unless ```.reload``` is used before.
+use .reload when changing the process context or when you're missing a specific modules in the list.
+
+- ```.reload``` to reload symbols of loaded modules. Typically used to load symbols of modules that weren't loaded before
+- You may want to use <code>!sym noisy</code> to diagnose symbol loading errors.
+- ```.reload /u``` - unload symbols. This is used to release the .pdb file of compiled code.
+  - Sometimes it's needed to forcefully close handles to PDB files because WinDbg does not close them.
+  (using process explorer or process hacker..)
+- ```lm``` (List Modules): Prints list of loaded modules
+- ```x``` (Examine): Prints loaded symbols - ```x <module_name>!<symbol_name>``` - you can use wildcard on both sides
+    - Search for a function by name: ```x MyDllName!FunctionName```
+    - Search for a function with wildcards ```x MyDllName!*Func``` (ends with Func)
 
 ## Source Navigation
 
-- .open -a <symbol> - open the source file with this symbol
+- ```.open -a <symbol>``` - open the source file with this symbol
 	
 ## Breakpoints
 
+These are the commands for int3 breakpoints.
 - bp - normal breakpoint
 - Breakpoint On DriverEntry - If your driver is not loaded yet, you cannot use "bp MyDriver!DriverEntry" because this symbol
-is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded.
+is not known yet. You can use the "bu" command, this allows to put a breakpoint on the driver entry because those breakpoints are calculated when a driver is loaded. Another trick to break at the load of drivers (Useful in case you don't have symbols) is breaking
+in ntoskrnl.exe where DriverEntry is called. (For example, IopLoadDriver)
 - bl - list breakpoints
 - bc * / bc <breakpoint_id> - clear breakpoint
 - bp /1 <location> - temporary breakpoint (break 1 time..)
@@ -225,6 +224,8 @@ is not known yet. You can use the "bu" command, this allows to put a breakpoint 
 - bp /p <EPROCESS address> <breakpoint address> - Break on a specific process - 
 	say you want your breakpoint to be on only for a specific process, you can use /p to do it
   
+- bp /t <ETHREAD address> <breakpoint address> - same as above, for threads.
+
 - bp <options> "<command"> - this will run a windbg command after breaking. You can combine multipile commands using ';' for example:
 
 This command will break at line 385 in the ProcessProtector.c file in the ProcessProtector module and it will print 
@@ -239,6 +240,10 @@ Break right before the process entry point in kernel debugging:
 ```
 bp ntdll!LdrpInitializeProcess "bp /1 KERNEL32!BaseThreadInitThunk; g"
 ```
+
+### Conditional breakpoints
+
+Conditional breakpoints allows you to break if a some DX expression evaluates to true.
 
 ## Analyzing BugChecks
 
@@ -497,6 +502,14 @@ dd nt!PoolHitTag L1 << read the current pool tag hit
 ed nt!PoolHitTag 'eliF' << set the current pool tag hit to 'File'. Each time a file will be allocated, we'll break
 
 
+## Debugger Expressions
+
+the ```dx``` command is one of the most useful commands of windbg. It can be used to evaluate a C++ like expressions in the debugger.
+The reason it's so powerfull is that it let's you access symbol information and javascript windbg scripts.
+
+Some simple examples (More examples later)
+
+
 ## Windbg Scripting
 ..
 ..
@@ -537,37 +550,8 @@ ntdll!RtlUserThreadStart:
 00007ffb`0290ce30 4883ec78        sub     rsp,78h
 0:007> sxe ld:mscorlib
 0:007> g
-ModLoad: 00007ffb`028a0000 00007ffb`02a90000   ntdll.dll
-ModLoad: 00007ffb`024f0000 00007ffb`02593000   C:\windows\System32\ADVAPI32.dll
-ModLoad: 00007ffb`01c60000 00007ffb`01cfe000   C:\windows\System32\msvcrt.dll
-ModLoad: 00007ffb`00d90000 00007ffb`00e27000   C:\windows\System32\sechost.dll
-ModLoad: 00007ffa`f5550000 00007ffa`f55b4000   C:\windows\SYSTEM32\MSCOREE.DLL
-ModLoad: 00007ffb`02670000 00007ffb`02790000   C:\windows\System32\RPCRT4.dll
-ModLoad: 00007ffb`00980000 00007ffb`00a32000   C:\windows\System32\KERNEL32.dll
-ModLoad: 00007ffa`ffc90000 00007ffa`fff34000   C:\windows\System32\KERNELBASE.dll
-ModLoad: 00007ffa`f4570000 00007ffa`f461a000   C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscoreei.dll
-ModLoad: 00007ffb`00c20000 00007ffb`00c72000   C:\windows\System32\SHLWAPI.dll
-ModLoad: 00007ffb`01620000 00007ffb`01955000   C:\windows\System32\combase.dll
-ModLoad: 00007ffa`fff40000 00007ffb`0003a000   C:\windows\System32\ucrtbase.dll
-ModLoad: 00007ffb`000a0000 00007ffb`00120000   C:\windows\System32\bcryptPrimitives.dll
-ModLoad: 00007ffb`024c0000 00007ffb`024e6000   C:\windows\System32\GDI32.dll
-ModLoad: 00007ffa`ff8d0000 00007ffa`ff8f1000   C:\windows\System32\win32u.dll
-ModLoad: 00007ffa`ffaf0000 00007ffa`ffc86000   C:\windows\System32\gdi32full.dll
-ModLoad: 00007ffa`ff900000 00007ffa`ff99e000   C:\windows\System32\msvcp_win.dll
-ModLoad: 00007ffb`01d00000 00007ffb`01e95000   C:\windows\System32\USER32.dll
-ModLoad: 00007ffb`00ab0000 00007ffb`00ade000   C:\windows\System32\IMM32.DLL
-ModLoad: 00007ffa`ff7d0000 00007ffa`ff7e1000   C:\windows\System32\kernel.appcore.dll
-ModLoad: 00007ffa`f4c80000 00007ffa`f4c8a000   C:\windows\SYSTEM32\VERSION.dll
-ModLoad: 00007ffa`d4880000 00007ffa`d5221000   C:\Windows\Microsoft.NET\Framework64\v2.0.50727\mscorwks.dll
-ModLoad: 00000000`51ed0000 00000000`51f99000   C:\windows\WinSxS\amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9659_none_88dfc6bf2faefcc6\MSVCR80.dll
-ModLoad: 00007ffb`00f30000 00007ffb`01617000   C:\windows\System32\shell32.dll
-ModLoad: 00007ffb`00120000 00007ffb`0016a000   C:\windows\System32\cfgmgr32.dll
-ModLoad: 00007ffb`00ce0000 00007ffb`00d89000   C:\windows\System32\shcore.dll
-ModLoad: 00007ffb`00170000 00007ffb`008f2000   C:\windows\System32\windows.storage.dll
-ModLoad: 00007ffa`ff7f0000 00007ffa`ff813000   C:\windows\System32\profapi.dll
-ModLoad: 00007ffa`ff780000 00007ffa`ff7ca000   C:\windows\System32\powrprof.dll
-ModLoad: 00007ffa`ff750000 00007ffa`ff760000   C:\windows\System32\UMPDC.dll
-ModLoad: 00007ffb`00900000 00007ffb`00917000   C:\windows\System32\cryptsp.dll
+...
+...
 ModLoad: 00007ffa`d3500000 00007ffa`d43e4000   C:\windows\assembly\NativeImages_v2.0.50727_64\mscorlib\712d042affe876859328e2d4029c7297\mscorlib.ni.dll
 ntdll!NtMapViewOfSection+0x14:
 00007ffb`0293c574 c3              ret
@@ -597,15 +581,27 @@ In dump files you get from other computers, you need to load dll using an absolu
 
 ### Finding information about a method/type
 
-- !dumpdomain - List all application domains.
-- !name2ee * <full method/type/assembly name>
-- !dumpmt -md <method_table_address> - List all the methods in a method table. Each object has a method table
-- !DumpMD /d <method_descriptor_address> - Show information about a method descriptor.
-- !ip2md <address> - get method descriptor by address. 
-- !dumpil <descriptor> - output IL disassembly of a method
-- !clrstack - show stack trace for CLR ONLY.
-- !dumpstack - show combined stack trace for CLR and native code.
-- !do <object_address> - Dump a managed object
-- !dso - Dump the objects on the stack
-- ~ -> list threads in user mode debugger
-	
+- ```!dumpdomain``` - List all application domains.
+- ```!name2ee * <full method/type/assembly name>``` can be used to find methods/types/assemblies
+  - Sometimes classes are missing when using !name2ee. Not sure why.
+- ```!dumpmt -md <method_table_address>``` - List all the methods in a method table. Each object has a method table
+- ```!DumpMD /d <method_descriptor_address>``` - Show information about a method descriptor.
+- ```!ip2md <address>``` - get method descriptor by address. 
+- ```!dumpil <descriptor>``` - output IL disassembly of a method
+- ```!clrstack``` - show stack trace for CLR ONLY.
+- ```!dumpstack``` - show combined stack trace for CLR and native code.
+  - This command is not so reliable - it can sometimes show unrelated functions 
+- ```!do <object_address>``` - Dump a managed object
+- ```!dso``` - Dump the objects on the stack
+- ```!threads``` - list the managed threads and can be used to change context to a different thread
+- ```!dumpmodule -mt <module>``` - List method tables in a module
+
+### Managed breakpoints
+
+There are 2 ways to put a breakpoint on a managed method:
+
+1 - Find the address of jitted code using ```!dumpmd``` and use the regular ```bp``` command.
+2 - If the method is not jitted yet, you can use the ```!bpmd``` command.
+
+
+## Minifilter Debugging
