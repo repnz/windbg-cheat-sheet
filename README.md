@@ -584,6 +584,7 @@ There are 2 ways to put a breakpoint on a managed method:
 - !poolfind
 - !kp, !kc
 - .frame <id>
+- !gflag +ksl, sxe ld dll_name
 - !ioctldecoder
 - %...%\WindowsApps\Microsoft.WinDbg_8wekyb3d8bbwe\WinDbgX.exe -k com:pipe,resets=0,reconnect,port=$(pipename) -c "$$< c:\tools\virtualkd\kdinit"
 - CTRL-ALT-K - Enable boot breakpoint - remember to use "Restart Guest" and not simply a reset to keep the same windbg process
