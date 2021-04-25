@@ -333,6 +333,9 @@ in debug mode, it can have valid arguments when using KV. In case the arguments 
 them by tracing the flow of register usage and seeing whether the value is saved in the stack somewhere. In some cases the parameter is lost because
 it's not saved anywhere on the stack. If we are lucky the parameter is saved somewhere and we can read it.
 
+The way I typically do this is to disassemble the function from the callstack, and see if the arguments are saved in the shadow space. If they are I use
+the KV command to extract the arguments, or use the Child SP value with ```dq /c1 @rsp```
+
 
 
 ## Processes
