@@ -233,6 +233,108 @@ fffffd08`ee125e08  fffff801`71449ebf --> ar8
 fffffd08`ee125e10  00000000`00000000 -->....
 fffffd08`ee125e18  00000000`00000000
 ```
+
+
+It's also useful to be able to extract function arguments of previous calls in the callstack. In 32 bit, windbg supports reading function
+arguments from the stack using the 'kv' command. Say we are debugging this code:
+
+```C
+#include <stdio.h>
+
+typedef struct OBJ {
+    int a;
+    int b;
+    int c;
+} OBJ, *POBJ;
+
+int AddValues1(int a, int b)
+{
+    return a + b;
+}
+
+int AddValues2(int a, int b)
+{
+    return AddValues1(a, b);
+}
+
+OBJ AddObjects(POBJ Obj1, POBJ Obj2)
+{
+    OBJ Obj3 = { 0 };
+    Obj3.a = AddValues2(Obj1->a, Obj2->a);
+    return Obj3;
+}
+
+int main()
+{
+    OBJ Obj1 = { 0 };
+    OBJ Obj2 = { 0 };
+
+    Obj1.a = 1;
+    Obj1.b = 2;
+    Obj1.c = 3;
+    Obj2.a = 4;
+    Obj2.b = 5;
+    Obj2.c = 6;
+
+    printf("Obj1 Address: 0x%p\n", &Obj1);
+    printf("Obj2 Address: 0x%p\n", &Obj2);
+
+    AddObjects(&Obj1, &Obj2);
+
+    return 0;
+}
+```
+
+The following example will show how to extract the 32 bit arguments:
+
+```
+0:000> bp AddValues1
+0:000> g
+Breakpoint 0 hit
+eax=00000004 ebx=01059000 ecx=00000001 edx=00000001 esi=00891a40 edi=0133fc58
+eip=008910c0 esp=0133fb80 ebp=0133fc58 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+Project1!AddValues1:
+008910c0 55              push    ebp
+0:000> kv
+ # ChildEBP RetAddr  Args to Child              
+00 0133fb7c 00891145 00000001 00000004 0133fd4c Project1!AddValues1 (FPO: [Non-Fpo]) (CONV: cdecl)
+01 0133fc58 0089104e 00000001 00000004 0133fe80 Project1!AddValues2+0x35 (FPO: [Non-Fpo]) (CONV: cdecl)
+02 0133fd4c 008912d8 0133fd70 0133fe6c 0133fe58 Project1!AddObjects+0x4e (FPO: [Non-Fpo]) (CONV: cdecl)
+03 0133fe80 008919e3 00000001 015f5db8 015fb990 Project1!main+0xa8 (FPO: [Non-Fpo]) (CONV: cdecl)
+04 0133fea0 008918b7 fdf471b3 00891a40 00891a40 Project1!invoke_main+0x33 (FPO: [Non-Fpo]) (CONV: cdecl)
+05 0133fefc 0089175d 0133ff0c 00891a48 0133ff1c Project1!__scrt_common_main_seh+0x157 (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+06 0133ff04 00891a48 0133ff1c 768f6359 01059000 Project1!__scrt_common_main+0xd (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 331] 
+07 0133ff0c 768f6359 01059000 768f6340 0133ff78 Project1!mainCRTStartup+0x8 (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp @ 17] 
+08 0133ff1c 77738964 01059000 5f9cd80a 00000000 KERNEL32!BaseThreadInitThunk+0x19 (FPO: [Non-Fpo])
+09 0133ff78 77738934 ffffffff 7775a0de 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [SEH])
+0a 0133ff88 00000000 00891a40 01059000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+0:000> dx (OBJ*)0x0133fd70 <<<<<< This is the "hidden" return value argument, as expected it has garbage
+(OBJ*)0x0133fd70                 : 0x133fd70 [Type: OBJ *]
+    [+0x000] a                : -858993460 [Type: int]
+    [+0x004] b                : -858993460 [Type: int]
+    [+0x008] c                : -858993460 [Type: int]
+0:000> dx (OBJ*)0x0133fe6c  <<<<<< This is arg1 from the call to AddObjects
+(OBJ*)0x0133fe6c                  : 0x133fe6c [Type: OBJ *]
+    [+0x000] a                : 1 [Type: int]
+    [+0x004] b                : 2 [Type: int]
+    [+0x008] c                : 3 [Type: int]
+0:000> dx (OBJ*)0x0133fe58  <<<<<< This is arg2
+(OBJ*)0x0133fe58                   : 0x133fe58 [Type: OBJ *]
+    [+0x000] a                : 4 [Type: int]
+    [+0x004] b                : 5 [Type: int]
+    [+0x008] c                : 6 [Type: int]
+
+```
+
+In 64 bit things are a bit more complicated because the calling conventions do not pass the 4 first arguments on the stack, but on registers.
+The KV command still tries to read the arguments from the stack, from the shadow space of passed arguments. So, if the file is compiled
+in debug mode, it can have valid arguments when using KV. In case the arguments are not saved in the shadow space, we can still try to extract
+them by tracing the flow of register usage and seeing whether the value is saved in the stack somewhere. In some cases the parameter is lost because
+it's not saved anywhere on the stack. If we are lucky the parameter is saved somewhere and we can read it.
+
+
+
 ## Processes
 
 - cid - CID in the windows structures means client id. Most of the time it refers to a ProcessId or a ThreadId but 
