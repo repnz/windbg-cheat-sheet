@@ -626,6 +626,17 @@ In dump files you get from other computers, you need to load dll using an absolu
 .load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\sos.dll
 ```
 
+### Loading into a Wow64 dump
+
+There's a bug in sos.dll that it cannot load correctly into a wow64 dump because it "thinks" the target architecture is incorrect.
+To solve this, you can use this Windbg plugin: https://github.com/poizan42/soswow64
+
+1. Load the dump into a Windbg x86 debugger. (It sometimes works with Windbgx64 debuggers too)
+2. load sos.dll
+3. load soswow64.dll
+4. switch to wow64 (wow64exts.sw)
+5. have fun!
+
 ### Finding information about a method/type
 
 - ```!dumpdomain``` - List all application domains.
