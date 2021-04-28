@@ -583,7 +583,7 @@ The SOS (Son Of Strike) Windbg extension can be used to debug .NET processes.
 
 ### Loading the SOS plugin
 
-The SOS windbg extension is loaded from the .NET runtime DLL. We first put a breakpoint on the MSCORLIB DLL (A .NET DLL that provides the .NET standard libraries)
+The SOS windbg extension is loaded from the .NET runtime DLL. First we have to make sure mscorlib is loaded into the process. if not (or, it's a dump) We first put a breakpoint on the MSCORLIB DLL (A .NET DLL that provides the .NET standard libraries)
 
 ```
 > sxe ld:mscorlib
@@ -605,6 +605,11 @@ ntdll!NtMapViewOfSection+0x14:
 ```
 After that, we can run a command to load the SOS plugin from the runtime DLL. the name of the runtime DLL was changed in .NET 4, so we have to specify a different name. 
 This command means: Load the "sos" plugin from a loaded DLL.
+
+To determine the version of .NET, you can run 'lm' and see which DLL is loaded:
+
+- mscorwks: .NET 2
+- clr: .NET 4
 
 ##### .NET 2
 
@@ -636,6 +641,27 @@ To solve this, you can use this Windbg plugin: https://github.com/poizan42/soswo
 3. load soswow64.dll
 4. switch to wow64 (wow64exts.sw)
 5. have fun!
+
+example:
+
+```
+0:000> .load C:\Windows\Microsoft.NET\Framework\v2.0.50727\SOS.dll
+0:000> .load C:\Tools\soswow64\soswow64.dll
+Successfully hooked IDebugControl::GetExecutingProcessorType.
+Successfully patched DbgEng!X86MachineInfo::ConvertCanonContextToTarget.
+0:000> !wow64exts.sw
+Switched to Guest (WoW) mode
+0:000:x86> !clrstack
+OS Thread Id: 0x1b20 (0)
+ESP       EIP     
+0010fd70 0000002b [InlinedCallFrame: 0010fd70] System.Windows.Forms.UnsafeNativeMethods.WaitMessage()
+0010fd6c 6e5a8e08 System.Windows.Forms.Application+ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(Int32, Int32, Int32)
+0010fe08 6e5a88f7 System.Windows.Forms.Application+ThreadContext.RunMessageLoopInner(Int32, System.Windows.Forms.ApplicationContext)
+0010fe5c 6e5a8741 System.Windows.Forms.Application+ThreadContext.RunMessageLoop(Int32, System.Windows.Forms.ApplicationContext)
+0010fe8c 6eabe7f2 System.Windows.Forms.Application.Run()
+.......
+.......
+```
 
 ### Finding information about a method/type
 
