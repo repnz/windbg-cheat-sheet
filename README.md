@@ -115,8 +115,8 @@ You can either:
 
 - Use [Osr Loader](https://www.osronline.com/article.cfm%5Earticle=157.htm) - This works on win 7-10
 - Use builtin SC tool (only win10)
-  - Use "sc service <REG_KEY_NAME> type= kernel binPath= <FULL_PATH>" to install the driver 
-  - Use "sc <REG_KEY_NAME> start" to load the driver
+  - Use "sc create <REG_KEY_NAME> type= kernel binPath= <FULL_PATH>" to install the driver 
+  - Use "sc start <REG_KEY_NAME>" to load the driver
 
 If there the DriverEntry function returns an error status, it will be returned to "sc" / OsrLoader and the driver will be unloaded without
 calling DriverUnload.
