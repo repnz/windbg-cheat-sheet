@@ -210,6 +210,8 @@ Conditional breakpoints allows you to break if a some DX expression evaluates to
 - use "dt" to see observe data structures
 - use "dx" to evaluate C++ Expressions
 - ```k``` - stack trace
+- ```!stacks``` - Inspect the stacks of all of the running threads.
+    - ```!stacks 1 <filter_string>``` can be used to filter based on some string in the stack
 
 #### Function arguments
 
