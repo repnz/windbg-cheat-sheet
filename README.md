@@ -340,6 +340,12 @@ the KV command to extract the arguments, or use the Child SP value with ```dq /c
 
 
 
+## Locks
+
+Inspecting the usage of locks is typically useful when debugging deadlock
+
+- !cs: ("Critical Sections")
+
 ## Processes
 
 - cid - CID in the windows structures means client id. Most of the time it refers to a ProcessId or a ThreadId but 
