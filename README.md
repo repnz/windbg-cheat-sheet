@@ -746,6 +746,7 @@ There are 2 ways to put a breakpoint on a managed method:
 - dx -id 0, 0, <process_object> <expression>
 - Change the value of register: r <reg_name> = <reg_value>
 - .pagein
+- !devnode + !devnode <address> 1 - show device node tree
 - Breakpoint in process by name after DLLs are loaded: 
 ```
 	bp /w "@$curprocess.Name.ToLower() == \"apcinjector.exe\"" nt!NtTestAlert ".reload;bp /t 1 apcinjector!main;g"
