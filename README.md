@@ -696,6 +696,10 @@ There are 2 ways to put a breakpoint on a managed method:
 2. If the method is not jitted yet, you can use the ```!bpmd``` command.
 
 
+## MEX Plugin
+
+!mex.tl -tree
+
 ## Minifilter Debugging
 
 ....
